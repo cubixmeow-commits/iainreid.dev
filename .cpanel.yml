@@ -1,14 +1,22 @@
 ---
 # cPanel Git Version Control deployment for iainreid.dev
 #
-# Copies the static portfolio from public/ into this account's document root.
-# Do not use shell wildcards (e.g. *) here — that can deploy .git and other
+# Private PHP app code (includes/, data/, docs/) lives outside the document
+# root at APPPATH. Only public/ is published to DEPLOYPATH.
+#
+# Do not use shell wildcards (e.g. *) that can deploy .git and other
 # non-public paths. Prefer explicit paths or public/. as the source.
 #
+# Each task runs in a fresh shell on cPanel, so exports are repeated.
 # If the site lives in a subdomain or addon-domain document root, change
 # DEPLOYPATH accordingly (for example: $HOME/public_html/portfolio).
 deployment:
   tasks:
-    - export DEPLOYPATH=$HOME/public_html/
-    - /bin/mkdir -p $DEPLOYPATH
-    - /bin/cp -R public/. $DEPLOYPATH
+    - export APPPATH=$HOME/iainreid-dev/; export DEPLOYPATH=$HOME/public_html/; /bin/mkdir -p "$APPPATH" "$DEPLOYPATH"
+    - export APPPATH=$HOME/iainreid-dev/; /bin/rm -rf "$APPPATH/includes"; /bin/cp -R includes "$APPPATH/"
+    - export APPPATH=$HOME/iainreid-dev/; /bin/rm -rf "$APPPATH/data"; /bin/cp -R data "$APPPATH/"
+    - export APPPATH=$HOME/iainreid-dev/; /bin/rm -rf "$APPPATH/docs"; /bin/cp -R docs "$APPPATH/"
+    - export APPPATH=$HOME/iainreid-dev/; /bin/cp AGENTS.md "$APPPATH/AGENTS.md"; /bin/cp README.md "$APPPATH/README.md"
+    - export DEPLOYPATH=$HOME/public_html/; /bin/cp -R public/. "$DEPLOYPATH"
+    - export DEPLOYPATH=$HOME/public_html/; /bin/rm -f "$DEPLOYPATH/index.html" "$DEPLOYPATH/assets/css/styles.css" "$DEPLOYPATH/assets/js/main.js"
+    - export APPPATH=$HOME/iainreid-dev/; export DEPLOYPATH=$HOME/public_html/; /bin/printf '%s\n' "$APPPATH" > "$DEPLOYPATH/.portfolio-root"; /bin/chmod 640 "$DEPLOYPATH/.portfolio-root"
