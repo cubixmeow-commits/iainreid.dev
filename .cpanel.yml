@@ -1,0 +1,14 @@
+---
+# cPanel Git Version Control deployment for iainreid.dev
+#
+# Copies the static portfolio from public/ into this account's document root.
+# Do not use shell wildcards (e.g. *) here — that can deploy .git and other
+# non-public paths. Prefer explicit paths or public/. as the source.
+#
+# If the site lives in a subdomain or addon-domain document root, change
+# DEPLOYPATH accordingly (for example: $HOME/public_html/portfolio).
+deployment:
+  tasks:
+    - export DEPLOYPATH=$HOME/public_html/
+    - /bin/mkdir -p $DEPLOYPATH
+    - /bin/cp -R public/. $DEPLOYPATH
