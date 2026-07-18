@@ -1,0 +1,17 @@
+{
+  "name": "Iain Reid | iainreid.dev",
+  "short_name": "iainreid.dev",
+  "description": "Personal development portfolio of Iain Reid: software products, experiments, and SaaS Lab.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#E8EEF2",
+  "theme_color": "#0F2740",
+  "icons": [
+    {
+      "src": "/assets/img/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
