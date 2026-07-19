@@ -7,3 +7,10 @@ deployment:
     - /bin/cp -R assets $DEPLOYPATH
     - /bin/cp -R includes $DEPLOYPATH
     - /bin/cp -R saas-lab $DEPLOYPATH
+    - /bin/cp -R auth $DEPLOYPATH
+    - /bin/cp -R admin $DEPLOYPATH
+    - /bin/cp -R data $DEPLOYPATH
+    - /bin/cp -R scripts $DEPLOYPATH
+    # SaaS Lab is now served by index.php; remove the stale static file so it
+    # does not win the directory index on the server (cp never deletes).
+    - /bin/rm -f $DEPLOYPATH/saas-lab/index.html
