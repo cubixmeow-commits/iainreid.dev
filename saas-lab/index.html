@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="SaaS Lab is Iain Reid's public workshop for rapidly building, testing, and validating experimental software ideas.">
+    <meta name="theme-color" content="#0d0c0a">
+    <meta property="og:title" content="SaaS Lab — Iain Reid">
+    <meta property="og:description" content="Rapidly building, testing, and validating software ideas.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://iainreid.dev/saas-lab/">
+    <meta name="twitter:card" content="summary_large_image">
+    <title>SaaS Lab — Iain Reid</title>
+    <link rel="canonical" href="https://iainreid.dev/saas-lab/">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=EB+Garamond:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --night: #0d0c0a;
+            --stone: #141210;
+            --panel: rgba(28, 22, 16, .62);
+            --panel-strong: rgba(34, 27, 20, .82);
+            --paper: #d8c79e;
+            --ink: #282015;
+            --brass: #ae8540;
+            --brass-light: #d2ad62;
+            --emerald: #6f9b86;
+            --ivory: #efe7d2;
+            --muted: #aaa08d;
+            --line: rgba(201, 164, 91, .28);
+            --line-soft: rgba(201, 164, 91, .14);
+            --green: #5fbf7a;
+            --amber: #d4b45a;
+            --blue: #6ea8d8;
+            --slate: #8a8580;
+            --rocket: #d2ad62;
+            --serif: "EB Garamond", Georgia, serif;
+            --display: "Cinzel", Georgia, serif;
+            --sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            --shadow: 0 24px 70px rgba(0, 0, 0, .45);
+            --radius: 1.1rem;
+            --max: 72rem;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            margin: 0;
+            min-width: 320px;
+            color: var(--ivory);
+            font-family: var(--sans);
+            line-height: 1.65;
+            background: var(--night);
+            overflow-x: hidden;
+        }
+        a { color: inherit; }
+        p { margin: 0 0 1rem; }
+        h1, h2, h3 {
+            margin: 0;
+            font-family: var(--display);
+            font-weight: 600;
+            line-height: 1.12;
+            letter-spacing: .02em;
+        }
+        img, svg { display: block; max-width: 100%; }
+
+        .lab-bg {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse 70% 45% at 50% -10%, rgba(174, 133, 64, .16), transparent 55%),
+                radial-gradient(ellipse 40% 30% at 85% 20%, rgba(111, 155, 134, .08), transparent 50%),
+                radial-gradient(ellipse 35% 28% at 10% 70%, rgba(174, 133, 64, .07), transparent 55%),
+                var(--night);
+        }
+        .lab-grid {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, .028) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, .022) 1px, transparent 1px);
+            background-size: 56px 56px;
+            mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, #000 20%, transparent 75%);
+            animation: grid-drift 40s linear infinite;
+        }
+        .lab-glow {
+            position: fixed;
+            width: 28rem;
+            height: 28rem;
+            border-radius: 50%;
+            filter: blur(90px);
+            pointer-events: none;
+            z-index: -1;
+            opacity: .55;
+        }
+        .lab-glow--a {
+            top: 8%;
+            left: 12%;
+            background: rgba(174, 133, 64, .14);
+            animation: float-a 14s ease-in-out infinite alternate;
+        }
+        .lab-glow--b {
+            top: 42%;
+            right: 8%;
+            background: rgba(111, 155, 134, .12);
+            animation: float-b 18s ease-in-out infinite alternate;
+        }
+        .lab-glow--c {
+            bottom: 5%;
+            left: 40%;
+            width: 22rem;
+            height: 22rem;
+            background: rgba(210, 173, 98, .08);
+            animation: float-a 22s ease-in-out infinite alternate-reverse;
+        }
+
+        .site-header {
+            position: fixed;
+            z-index: 40;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+            padding: 1rem clamp(1rem, 4vw, 3.5rem);
+            border-bottom: 1px solid transparent;
+            transition: background .25s ease, border-color .25s ease, backdrop-filter .25s ease;
+        }
+        .site-header.is-scrolled {
+            background: rgba(13, 12, 10, .78);
+            border-color: var(--line-soft);
+            backdrop-filter: blur(18px);
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: .75rem;
+            text-decoration: none;
+        }
+        .brand__mark {
+            display: grid;
+            place-items: center;
+            width: 2.4rem;
+            aspect-ratio: 1;
+            border: 1px solid var(--brass);
+            rotate: 45deg;
+            color: var(--brass-light);
+            font-family: var(--display);
+            font-size: .68rem;
+        }
+        .brand__mark span { rotate: -45deg; }
+        .brand strong,
+        .brand small { display: block; }
+        .brand strong {
+            font-family: var(--display);
+            font-size: .82rem;
+            letter-spacing: .08em;
+        }
+        .brand small {
+            color: var(--muted);
+            font-size: .68rem;
+        }
+        .nav-toggle {
+            display: none;
+            width: 2.6rem;
+            height: 2.6rem;
+            padding: 0;
+            border: 1px solid var(--line);
+            background: rgba(13, 12, 10, .72);
+            color: var(--brass-light);
+            cursor: pointer;
+        }
+        .nav-toggle__bars,
+        .nav-toggle__bars::before,
+        .nav-toggle__bars::after {
+            display: block;
+            width: 1.05rem;
+            height: 1px;
+            margin: 0 auto;
+            background: currentColor;
+            transition: transform .25s ease, opacity .2s ease;
+        }
+        .nav-toggle__bars::before,
+        .nav-toggle__bars::after { content: ""; }
+        .nav-toggle__bars::before { translate: 0 -.35rem; }
+        .nav-toggle__bars::after { translate: 0 .35rem; }
+        .site-header.is-nav-open .nav-toggle__bars { background: transparent; }
+        .site-header.is-nav-open .nav-toggle__bars::before { translate: 0 0; rotate: 45deg; }
+        .site-header.is-nav-open .nav-toggle__bars::after { translate: 0 0; rotate: -45deg; }
+        nav {
+            display: flex;
+            align-items: center;
+            gap: clamp(.85rem, 2.2vw, 1.8rem);
+        }
+        nav a {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: .72rem;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            transition: color .2s ease;
+        }
+        nav a:hover,
+        nav a:focus-visible,
+        nav a[aria-current="page"] { color: var(--paper); }
+
+        .hero {
+            position: relative;
+            display: grid;
+            align-content: center;
+            min-height: 100svh;
+            padding: 8rem clamp(1rem, 4vw, 3.5rem) 5rem;
+        }
+        .hero__inner {
+            width: min(100%, 42rem);
+            margin: 0 auto;
+            text-align: center;
+        }
+        .kicker {
+            margin: 0 0 1rem;
+            color: var(--brass-light);
+            font-family: var(--display);
+            font-size: .72rem;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+        }
+        .hero h1 {
+            font-size: clamp(3.4rem, 10vw, 6.5rem);
+            letter-spacing: .04em;
+        }
+        .hero__sub {
+            margin: 1.35rem 0 0;
+            color: var(--paper);
+            font-family: var(--serif);
+            font-size: clamp(1.25rem, 2.4vw, 1.7rem);
+            line-height: 1.35;
+        }
+        .hero__rule {
+            width: min(100%, 12rem);
+            height: 1px;
+            margin: 2rem auto;
+            background: linear-gradient(90deg, transparent, var(--brass) 20% 80%, transparent);
+            opacity: .7;
+        }
+        .hero__lede {
+            margin: 0 auto;
+            max-width: 34rem;
+            color: var(--muted);
+            font-size: 1rem;
+        }
+        .hero__cta {
+            display: inline-flex;
+            align-items: center;
+            gap: .55rem;
+            margin-top: 2.25rem;
+            padding: .85rem 1.35rem;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            background: rgba(34, 27, 20, .55);
+            color: var(--ivory);
+            text-decoration: none;
+            font-family: var(--display);
+            font-size: .72rem;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            backdrop-filter: blur(12px);
+            transition: border-color .25s ease, background .25s ease, translate .25s ease;
+        }
+        .hero__cta:hover,
+        .hero__cta:focus-visible {
+            border-color: rgba(210, 173, 98, .65);
+            background: rgba(48, 37, 24, .75);
+            translate: 0 -.1rem;
+        }
+
+        .section {
+            width: min(100% - 2rem, var(--max));
+            margin: 0 auto;
+            padding: clamp(4.5rem, 9vw, 8rem) 0;
+        }
+        .section-heading {
+            max-width: 40rem;
+            margin-bottom: 2.75rem;
+        }
+        .section-heading h2 {
+            font-size: clamp(2rem, 4.8vw, 3.6rem);
+        }
+        .section-heading > p:last-child {
+            margin: 1rem 0 0;
+            color: var(--muted);
+            max-width: 36rem;
+        }
+
+        .glass {
+            border: 1px solid var(--line-soft);
+            border-radius: var(--radius);
+            background:
+                linear-gradient(145deg, rgba(255, 255, 255, .045), transparent 42%),
+                var(--panel);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(18px);
+        }
+
+        .intro-panel {
+            padding: clamp(1.75rem, 4vw, 3rem);
+        }
+        .intro-panel p {
+            max-width: 42rem;
+            color: var(--muted);
+            font-family: var(--serif);
+            font-size: clamp(1.1rem, 1.8vw, 1.3rem);
+            line-height: 1.55;
+        }
+        .intro-panel p:last-child { margin-bottom: 0; }
+        .intro-panel .accent {
+            color: var(--paper);
+        }
+
+        .philosophy-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1rem;
+        }
+        .phil-card {
+            padding: 1.5rem 1.25rem;
+            min-height: 12rem;
+            transition: border-color .25s ease, translate .25s ease, box-shadow .25s ease;
+        }
+        .phil-card:hover {
+            border-color: rgba(210, 173, 98, .45);
+            translate: 0 -.2rem;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, .4);
+        }
+        .phil-card__index {
+            display: block;
+            margin-bottom: 1.5rem;
+            color: var(--brass);
+            font-family: monospace;
+            font-size: .7rem;
+            letter-spacing: .1em;
+        }
+        .phil-card h3 {
+            margin-bottom: .7rem;
+            font-size: 1.15rem;
+        }
+        .phil-card p {
+            margin: 0;
+            color: var(--muted);
+            font-size: .9rem;
+        }
+
+        .status-system {
+            display: grid;
+            grid-template-columns: 1.1fr 1fr;
+            gap: 1.25rem;
+            align-items: stretch;
+        }
+        .status-copy,
+        .status-legend {
+            padding: clamp(1.5rem, 3.5vw, 2.5rem);
+        }
+        .status-copy h2 { margin-bottom: 1rem; }
+        .status-copy p { color: var(--muted); }
+        .status-copy p:last-child { margin-bottom: 0; }
+        .badge-list {
+            display: grid;
+            gap: .85rem;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: .55rem;
+            padding: .45rem .8rem;
+            border: 1px solid var(--line-soft);
+            border-radius: 999px;
+            background: rgba(13, 12, 10, .35);
+            font-size: .78rem;
+            letter-spacing: .04em;
+        }
+        .badge__dot {
+            width: .55rem;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            box-shadow: 0 0 10px currentColor;
+        }
+        .badge--active .badge__dot { background: var(--green); color: var(--green); }
+        .badge--experiment .badge__dot { background: var(--amber); color: var(--amber); }
+        .badge--prototype .badge__dot { background: var(--blue); color: var(--blue); }
+        .badge--archived .badge__dot { background: var(--slate); color: var(--slate); }
+        .badge--launching .badge__dot {
+            background: var(--rocket);
+            color: var(--rocket);
+            border-radius: 0;
+            clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+            width: .5rem;
+            height: .55rem;
+            box-shadow: none;
+        }
+        .badge__label { color: var(--ivory); }
+        .badge__hint {
+            margin-left: .15rem;
+            color: var(--muted);
+            font-size: .72rem;
+        }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.15rem;
+        }
+        .project-card {
+            display: flex;
+            flex-direction: column;
+            min-height: 18rem;
+            padding: 1.6rem;
+            transition: border-color .25s ease, translate .25s ease, box-shadow .25s ease;
+        }
+        .project-card:hover {
+            border-color: rgba(210, 173, 98, .5);
+            translate: 0 -.25rem;
+            box-shadow: 0 22px 55px rgba(0, 0, 0, .42);
+        }
+        .project-card__top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: .75rem;
+            margin-bottom: 2.5rem;
+        }
+        .project-card__mark {
+            color: var(--brass);
+            font-family: monospace;
+            font-size: .7rem;
+            letter-spacing: .1em;
+        }
+        .project-card h3 {
+            margin-bottom: .85rem;
+            font-size: clamp(1.35rem, 2vw, 1.7rem);
+        }
+        .project-card p {
+            margin: 0;
+            color: var(--muted);
+            font-size: .95rem;
+        }
+        .project-card__footer {
+            margin-top: auto;
+            padding-top: 1.75rem;
+            border-top: 1px solid var(--line-soft);
+            color: var(--muted);
+            font-size: .72rem;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+
+        .timeline {
+            padding: clamp(1.75rem, 4vw, 2.75rem);
+            overflow-x: auto;
+        }
+        .timeline__track {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0;
+            min-width: 44rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .timeline__step {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: .85rem;
+            flex: 1;
+            text-align: center;
+        }
+        .timeline__node {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            place-items: center;
+            width: 2.6rem;
+            height: 2.6rem;
+            border: 1px solid var(--line);
+            border-radius: 50%;
+            background: rgba(13, 12, 10, .75);
+            color: var(--brass-light);
+            font-family: var(--display);
+            font-size: .68rem;
+            letter-spacing: .04em;
+        }
+        .timeline__step:not(:last-child)::after {
+            content: "";
+            position: absolute;
+            top: 1.3rem;
+            left: calc(50% + 1.4rem);
+            width: calc(100% - 2.8rem);
+            height: 1px;
+            background: linear-gradient(90deg, rgba(210, 173, 98, .55), rgba(210, 173, 98, .15));
+        }
+        .timeline__label {
+            color: var(--paper);
+            font-family: var(--display);
+            font-size: .78rem;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+        .timeline__branch {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: .55rem;
+            margin-top: .25rem;
+        }
+        .timeline__or {
+            color: var(--muted);
+            font-size: .68rem;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+        }
+        .timeline__fork {
+            display: flex;
+            gap: .5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .timeline__chip {
+            padding: .3rem .65rem;
+            border: 1px solid var(--line-soft);
+            border-radius: 999px;
+            color: var(--muted);
+            font-size: .72rem;
+            letter-spacing: .06em;
+        }
+        .timeline__chip--launch {
+            color: var(--green);
+            border-color: rgba(95, 191, 122, .35);
+        }
+        .timeline__chip--archive {
+            color: var(--slate);
+            border-color: rgba(138, 133, 128, .35);
+        }
+
+        .principles-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+        .principle {
+            padding: 1.4rem 1.3rem;
+            transition: border-color .25s ease, translate .25s ease;
+        }
+        .principle:hover {
+            border-color: rgba(210, 173, 98, .4);
+            translate: 0 -.15rem;
+        }
+        .principle h3 {
+            font-size: 1.05rem;
+            margin-bottom: .35rem;
+        }
+        .principle p {
+            margin: 0;
+            color: var(--muted);
+            font-size: .88rem;
+        }
+
+        .closing {
+            text-align: center;
+            padding-bottom: 2rem;
+        }
+        .closing .glass {
+            padding: clamp(2rem, 5vw, 3.25rem);
+        }
+        .closing h2 {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            margin-bottom: 1rem;
+        }
+        .closing p {
+            margin: 0 auto 1.75rem;
+            max-width: 32rem;
+            color: var(--muted);
+            font-family: var(--serif);
+            font-size: 1.15rem;
+        }
+        .closing a {
+            color: var(--brass-light);
+            text-decoration: none;
+            border-bottom: 1px solid currentColor;
+            font-family: var(--display);
+            font-size: .74rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+        }
+
+        footer {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            width: min(100% - 2rem, var(--max));
+            margin: 0 auto;
+            padding: 2rem 0 2.5rem;
+            border-top: 1px solid var(--line-soft);
+            color: var(--muted);
+            font-size: .7rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+        }
+
+        [data-reveal] {
+            opacity: 0;
+            translate: 0 1.1rem;
+            transition: opacity .75s ease, translate .75s ease;
+        }
+        [data-reveal].is-visible {
+            opacity: 1;
+            translate: 0 0;
+        }
+
+        @keyframes grid-drift {
+            to { background-position: 56px 56px, 56px 56px; }
+        }
+        @keyframes float-a {
+            from { translate: 0 0; }
+            to { translate: 2rem 1.5rem; }
+        }
+        @keyframes float-b {
+            from { translate: 0 0; }
+            to { translate: -1.5rem 2rem; }
+        }
+
+        @media (max-width: 980px) {
+            .philosophy-grid { grid-template-columns: repeat(3, 1fr); }
+            .phil-card:nth-child(4),
+            .phil-card:nth-child(5) { grid-column: span 1; }
+            .status-system { grid-template-columns: 1fr; }
+            .project-grid { grid-template-columns: 1fr 1fr; }
+            .principles-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (max-width: 900px) {
+            .nav-toggle { display: grid; place-items: center; }
+            nav {
+                position: absolute;
+                top: calc(100% - 1px);
+                right: 1rem;
+                left: 1rem;
+                display: flex;
+                flex-direction: column;
+                gap: 0;
+                padding: .55rem 0;
+                border: 1px solid var(--line);
+                background: rgba(13, 12, 10, .94);
+                backdrop-filter: blur(18px);
+                box-shadow: 0 18px 40px rgba(0, 0, 0, .45);
+                opacity: 0;
+                visibility: hidden;
+                pointer-events: none;
+                translate: 0 -.35rem;
+                transition: opacity .25s ease, translate .25s ease, visibility .25s ease;
+            }
+            .site-header.is-nav-open {
+                background: rgba(13, 12, 10, .94);
+                border-color: var(--line);
+                backdrop-filter: blur(18px);
+            }
+            .site-header.is-nav-open nav {
+                opacity: 1;
+                visibility: visible;
+                pointer-events: auto;
+                translate: 0 0;
+            }
+            nav a {
+                padding: .95rem 1.15rem;
+                border-top: 1px solid rgba(201, 164, 91, .14);
+            }
+            nav a:first-child { border-top: 0; }
+        }
+
+        @media (max-width: 700px) {
+            .philosophy-grid,
+            .project-grid,
+            .principles-grid { grid-template-columns: 1fr; }
+            .brand small { display: none; }
+            .hero { padding-inline: 1rem; }
+            .section { width: min(100% - 1.25rem, var(--max)); }
+            footer {
+                width: calc(100% - 1.25rem);
+                flex-direction: column;
+                gap: .4rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after {
+                animation-duration: .01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: .01ms !important;
+            }
+            [data-reveal] { opacity: 1; translate: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="lab-bg" aria-hidden="true"></div>
+    <div class="lab-grid" aria-hidden="true"></div>
+    <div class="lab-glow lab-glow--a" aria-hidden="true"></div>
+    <div class="lab-glow lab-glow--b" aria-hidden="true"></div>
+    <div class="lab-glow lab-glow--c" aria-hidden="true"></div>
+
+    <header class="site-header">
+        <a class="brand" href="/">
+            <span class="brand__mark" aria-hidden="true"><span>IR</span></span>
+            <span>
+                <strong>Iain Reid</strong>
+                <small>Independent software developer</small>
+            </span>
+        </a>
+        <button
+            class="nav-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="site-nav"
+            aria-label="Open menu">
+            <span class="nav-toggle__bars" aria-hidden="true"></span>
+        </button>
+        <nav id="site-nav" aria-label="Primary navigation">
+            <a href="/">Workshop</a>
+            <a href="/saas-lab/" aria-current="page">SaaS Lab</a>
+            <a href="#projects">Projects</a>
+            <a href="#process">Process</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero" id="top">
+            <div class="hero__inner" data-reveal>
+                <p class="kicker">Public R&amp;D workshop</p>
+                <h1>SaaS Lab</h1>
+                <p class="hero__sub">Rapidly building, testing, and validating software ideas.</p>
+                <div class="hero__rule" aria-hidden="true"></div>
+                <p class="hero__lede">A modern software laboratory for experiments, prototypes, and lessons learned.</p>
+                <a class="hero__cta" href="#projects">View current experiments <span aria-hidden="true">↓</span></a>
+            </div>
+        </section>
+
+        <section class="section" id="about" aria-labelledby="about-heading">
+            <div class="section-heading" data-reveal>
+                <p class="kicker">The workshop</p>
+                <h2 id="about-heading">A public place to learn in the open</h2>
+            </div>
+            <div class="glass intro-panel" data-reveal>
+                <p><span class="accent">SaaS Lab is my public workshop.</span></p>
+                <p>Some ideas become products. Some become open source. Some fail. Every project teaches something.</p>
+                <p>Instead of hiding unfinished work, I use this space to document experiments, prototypes, and lessons learned while exploring new software ideas.</p>
+                <p>The goal isn’t to launch everything. The goal is to find the ideas worth building.</p>
+            </div>
+        </section>
+
+        <section class="section" id="philosophy" aria-labelledby="philosophy-heading">
+            <div class="section-heading" data-reveal>
+                <p class="kicker">Operating method</p>
+                <h2 id="philosophy-heading">Build Fast. Learn Faster.</h2>
+                <p>A short loop for turning vague ideas into evidence.</p>
+            </div>
+            <div class="philosophy-grid">
+                <article class="glass phil-card" data-reveal>
+                    <span class="phil-card__index">01</span>
+                    <h3>Prototype</h3>
+                    <p>Build the smallest version possible.</p>
+                </article>
+                <article class="glass phil-card" data-reveal>
+                    <span class="phil-card__index">02</span>
+                    <h3>Test</h3>
+                    <p>See whether real people actually want it.</p>
+                </article>
+                <article class="glass phil-card" data-reveal>
+                    <span class="phil-card__index">03</span>
+                    <h3>Measure</h3>
+                    <p>Analyze what worked and what didn’t.</p>
+                </article>
+                <article class="glass phil-card" data-reveal>
+                    <span class="phil-card__index">04</span>
+                    <h3>Iterate</h3>
+                    <p>Improve the promising ideas.</p>
+                </article>
+                <article class="glass phil-card" data-reveal>
+                    <span class="phil-card__index">05</span>
+                    <h3>Archive</h3>
+                    <p>Not every experiment deserves to become a business. That’s part of the process.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="section" id="status" aria-labelledby="status-heading">
+            <div class="status-system" data-reveal>
+                <div class="glass status-copy">
+                    <p class="kicker">Project labels</p>
+                    <h2 id="status-heading">Every project is clearly labeled</h2>
+                    <p>Status badges keep the lab honest. Visitors can see what is actively shipping, what is still an experiment, and what has been archived without guesswork.</p>
+                </div>
+                <div class="glass status-legend">
+                    <ul class="badge-list">
+                        <li>
+                            <span class="badge badge--active">
+                                <span class="badge__dot" aria-hidden="true"></span>
+                                <span class="badge__label">Active</span>
+                                <span class="badge__hint">In motion</span>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="badge badge--experiment">
+                                <span class="badge__dot" aria-hidden="true"></span>
+                                <span class="badge__label">Experiment</span>
+                                <span class="badge__hint">Still probing</span>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="badge badge--prototype">
+                                <span class="badge__dot" aria-hidden="true"></span>
+                                <span class="badge__label">Prototype</span>
+                                <span class="badge__hint">Early form</span>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="badge badge--archived">
+                                <span class="badge__dot" aria-hidden="true"></span>
+                                <span class="badge__label">Archived</span>
+                                <span class="badge__hint">Lessons kept</span>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="badge badge--launching">
+                                <span class="badge__dot" aria-hidden="true"></span>
+                                <span class="badge__label">Launching</span>
+                                <span class="badge__hint">Going live</span>
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="projects" aria-labelledby="projects-heading">
+            <div class="section-heading" data-reveal>
+                <p class="kicker">On the bench</p>
+                <h2 id="projects-heading">Current Projects</h2>
+                <p>Placeholder experiments for now. New cards can be added here without redesigning the page.</p>
+            </div>
+            <div class="project-grid">
+                <article class="glass project-card" data-reveal>
+                    <div class="project-card__top">
+                        <span class="project-card__mark">LAB · 01</span>
+                        <span class="badge badge--active">
+                            <span class="badge__dot" aria-hidden="true"></span>
+                            <span class="badge__label">Active</span>
+                        </span>
+                    </div>
+                    <h3>AI Workflow Marketplace</h3>
+                    <p>A marketplace for AI workflows that work with existing AI subscriptions instead of expensive APIs.</p>
+                    <div class="project-card__footer">Add details later</div>
+                </article>
+
+                <article class="glass project-card" data-reveal>
+                    <div class="project-card__top">
+                        <span class="project-card__mark">LAB · 02</span>
+                        <span class="badge badge--prototype">
+                            <span class="badge__dot" aria-hidden="true"></span>
+                            <span class="badge__label">Prototype</span>
+                        </span>
+                    </div>
+                    <h3>Project Atlas</h3>
+                    <p>An experiment focused on organizing and validating hundreds of software ideas.</p>
+                    <div class="project-card__footer">Add details later</div>
+                </article>
+
+                <article class="glass project-card" data-reveal>
+                    <div class="project-card__top">
+                        <span class="project-card__mark">LAB · 03</span>
+                        <span class="badge badge--experiment">
+                            <span class="badge__dot" aria-hidden="true"></span>
+                            <span class="badge__label">Experiment</span>
+                        </span>
+                    </div>
+                    <h3>More Coming Soon</h3>
+                    <p>Currently exploring several new concepts.</p>
+                    <div class="project-card__footer">Add details later</div>
+                </article>
+            </div>
+        </section>
+
+        <section class="section" id="process" aria-labelledby="process-heading">
+            <div class="section-heading" data-reveal>
+                <p class="kicker">Validation path</p>
+                <h2 id="process-heading">Process Timeline</h2>
+                <p>Every experiment follows the same route. Launch is optional. Archive is always available.</p>
+            </div>
+            <div class="glass timeline" data-reveal>
+                <ol class="timeline__track">
+                    <li class="timeline__step">
+                        <span class="timeline__node">01</span>
+                        <span class="timeline__label">Idea</span>
+                    </li>
+                    <li class="timeline__step">
+                        <span class="timeline__node">02</span>
+                        <span class="timeline__label">Prototype</span>
+                    </li>
+                    <li class="timeline__step">
+                        <span class="timeline__node">03</span>
+                        <span class="timeline__label">Feedback</span>
+                    </li>
+                    <li class="timeline__step">
+                        <span class="timeline__node">04</span>
+                        <span class="timeline__label">Iteration</span>
+                    </li>
+                    <li class="timeline__step">
+                        <span class="timeline__node">05</span>
+                        <div class="timeline__branch">
+                            <span class="timeline__or">then</span>
+                            <div class="timeline__fork" aria-label="Possible outcomes">
+                                <span class="timeline__chip timeline__chip--launch">Launch</span>
+                                <span class="timeline__chip timeline__chip--archive">or Archive</span>
+                            </div>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <section class="section" id="principles" aria-labelledby="principles-heading">
+            <div class="section-heading" data-reveal>
+                <p class="kicker">Lab rules</p>
+                <h2 id="principles-heading">Principles</h2>
+                <p>A short set of constraints that keep experiments honest.</p>
+            </div>
+            <div class="principles-grid">
+                <article class="glass principle" data-reveal>
+                    <h3>Build in public</h3>
+                    <p>Share the work while it is still unfinished.</p>
+                </article>
+                <article class="glass principle" data-reveal>
+                    <h3>Ship early</h3>
+                    <p>Put something real in front of people quickly.</p>
+                </article>
+                <article class="glass principle" data-reveal>
+                    <h3>Measure everything</h3>
+                    <p>Prefer evidence over instinct when deciding what continues.</p>
+                </article>
+                <article class="glass principle" data-reveal>
+                    <h3>Keep what works</h3>
+                    <p>Promote the ideas that earn their place.</p>
+                </article>
+                <article class="glass principle" data-reveal>
+                    <h3>Kill what doesn’t</h3>
+                    <p>Archive cleanly instead of dragging dead weight forward.</p>
+                </article>
+                <article class="glass principle" data-reveal>
+                    <h3>Learn continuously</h3>
+                    <p>Treat every outcome as material for the next experiment.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="section closing" aria-labelledby="closing-heading">
+            <div class="glass" data-reveal>
+                <p class="kicker">Continue exploring</p>
+                <h2 id="closing-heading">Back to the workshop</h2>
+                <p>SaaS Lab is one shelf in a larger workshop journal. The main site holds the current craft, archive, and maker notes.</p>
+                <a href="/">Return to iainreid.dev</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <span>iainreid.dev / saas-lab</span>
+        <span>Experimental record · <time datetime="2026">2026</time></span>
+    </footer>
+
+    <script>
+        (() => {
+            'use strict';
+
+            const header = document.querySelector('.site-header');
+            const toggle = document.querySelector('.nav-toggle');
+            const nav = document.querySelector('#site-nav');
+            const revealItems = document.querySelectorAll('[data-reveal]');
+            const desktopQuery = window.matchMedia('(min-width: 901px)');
+
+            const updateHeader = () => {
+                if (!header) return;
+                header.classList.toggle('is-scrolled', window.scrollY > 24);
+            };
+
+            const setNavOpen = (open) => {
+                if (!header || !toggle) return;
+                header.classList.toggle('is-nav-open', open);
+                toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+                toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+            };
+
+            const closeNav = () => setNavOpen(false);
+
+            updateHeader();
+            window.addEventListener('scroll', updateHeader, { passive: true });
+
+            if (toggle && nav && header) {
+                toggle.addEventListener('click', () => {
+                    setNavOpen(!header.classList.contains('is-nav-open'));
+                });
+
+                nav.querySelectorAll('a').forEach((link) => {
+                    link.addEventListener('click', closeNav);
+                });
+
+                document.addEventListener('keydown', (event) => {
+                    if (event.key === 'Escape') closeNav();
+                });
+
+                document.addEventListener('click', (event) => {
+                    if (!header.classList.contains('is-nav-open')) return;
+                    if (header.contains(event.target)) return;
+                    closeNav();
+                });
+
+                const handleDesktopChange = (event) => {
+                    if (event.matches) closeNav();
+                };
+
+                if (typeof desktopQuery.addEventListener === 'function') {
+                    desktopQuery.addEventListener('change', handleDesktopChange);
+                } else if (typeof desktopQuery.addListener === 'function') {
+                    desktopQuery.addListener(handleDesktopChange);
+                }
+            }
+
+            if (!('IntersectionObserver' in window)) {
+                revealItems.forEach((item) => item.classList.add('is-visible'));
+                return;
+            }
+
+            const observer = new IntersectionObserver((entries, activeObserver) => {
+                entries.forEach((entry) => {
+                    if (!entry.isIntersecting) return;
+                    entry.target.classList.add('is-visible');
+                    activeObserver.unobserve(entry.target);
+                });
+            }, {
+                rootMargin: '0px 0px -8% 0px',
+                threshold: 0.12,
+            });
+
+            revealItems.forEach((item) => observer.observe(item));
+        })();
+    </script>
+</body>
+</html>
