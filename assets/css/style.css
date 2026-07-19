@@ -110,9 +110,52 @@ h1, h2, h3 { margin: 0; font-family: var(--display); font-weight: 600; line-heig
 .maker-mark strong, .maker-mark small { display: block; }
 .maker-mark strong { font-family: var(--display); font-size: .86rem; letter-spacing: .08em; }
 .maker-mark small { color: var(--muted); font-size: .7rem; }
-nav { display: flex; gap: clamp(.8rem, 2.5vw, 2rem); }
-nav a { color: var(--muted); text-decoration: none; font-size: .74rem; letter-spacing: .11em; text-transform: uppercase; transition: color .2s ease; }
-nav a:hover { color: var(--paper-light); }
+.nav-toggle {
+    display: none;
+    position: relative;
+    z-index: 40;
+    width: 2.6rem;
+    height: 2.6rem;
+    padding: 0;
+    border: 1px solid var(--line);
+    background: rgba(13, 12, 10, .72);
+    color: var(--brass-light);
+    cursor: pointer;
+}
+.nav-toggle__bars,
+.nav-toggle__bars::before,
+.nav-toggle__bars::after {
+    display: block;
+    width: 1.05rem;
+    height: 1px;
+    margin: 0 auto;
+    background: currentColor;
+    transition: transform .25s ease, opacity .2s ease;
+}
+.nav-toggle__bars::before,
+.nav-toggle__bars::after {
+    content: "";
+}
+.nav-toggle__bars::before { translate: 0 -.35rem; }
+.nav-toggle__bars::after { translate: 0 .35rem; }
+.site-header.is-nav-open .nav-toggle__bars { background: transparent; }
+.site-header.is-nav-open .nav-toggle__bars::before { translate: 0 0; rotate: 45deg; }
+.site-header.is-nav-open .nav-toggle__bars::after { translate: 0 0; rotate: -45deg; }
+.site-header.is-nav-open .nav-toggle { border-color: rgba(210, 173, 98, .55); }
+nav {
+    display: flex;
+    gap: clamp(.8rem, 2.5vw, 2rem);
+}
+nav a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: .74rem;
+    letter-spacing: .11em;
+    text-transform: uppercase;
+    transition: color .2s ease;
+}
+nav a:hover,
+nav a:focus-visible { color: var(--paper-light); }
 
 .hero {
     position: relative;
@@ -335,7 +378,42 @@ footer { display: flex; justify-content: space-between; width: min(100% - 2rem, 
 @keyframes drift { to { background-position: 100px 180px, -80px 240px; } }
 
 @media (max-width: 900px) {
-    nav { display: none; }
+    .nav-toggle { display: grid; place-items: center; }
+    nav {
+        position: absolute;
+        top: calc(100% - 1px);
+        right: 1rem;
+        left: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        padding: .55rem 0;
+        border: 1px solid var(--line);
+        background: rgba(13, 12, 10, .94);
+        backdrop-filter: blur(18px);
+        box-shadow: 0 18px 40px rgba(0, 0, 0, .45);
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        translate: 0 -.35rem;
+        transition: opacity .25s ease, translate .25s ease, visibility .25s ease;
+    }
+    .site-header.is-nav-open {
+        background: rgba(13, 12, 10, .94);
+        border-color: var(--line);
+        backdrop-filter: blur(18px);
+    }
+    .site-header.is-nav-open nav {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        translate: 0 0;
+    }
+    nav a {
+        padding: .95rem 1.15rem;
+        border-top: 1px solid rgba(201, 164, 91, .14);
+    }
+    nav a:first-child { border-top: 0; }
     .journal { grid-template-columns: 1fr; width: min(100%, 38rem); transform: none; }
     .journal::after { display: none; }
     .journal-page { min-height: auto; }
