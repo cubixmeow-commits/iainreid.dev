@@ -18,7 +18,7 @@ function e(string $value): string
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="The workshop journal of Iain Reid, an independent software developer building practical systems, experiments, and digital tools.">
     <title>Iain Reid — The Workshop Journal</title>
-    <link rel="stylesheet" href="assets/css/style.css?v=20260719e">
+    <link rel="stylesheet" href="assets/css/style.css?v=20260719f">
 </head>
 <body>
     <div class="ambient-light" aria-hidden="true"></div>
@@ -43,6 +43,7 @@ function e(string $value): string
         <nav id="site-nav" aria-label="Primary navigation">
             <a href="#journal">Journal</a>
             <a href="#workshop">Workshop</a>
+            <a href="/saas-lab/">SaaS Lab</a>
             <a href="#archive">Archive</a>
             <a href="#about">The Maker</a>
         </nav>
@@ -110,6 +111,9 @@ function e(string $value): string
                         <div><dt>Materials</dt><dd><?= e(implode(' · ', $current['materials'])) ?></dd></div>
                         <div><dt>Purpose</dt><dd>Rapidly test whether an idea deserves to become a product.</dd></div>
                     </dl>
+                    <?php if (($current['slug'] ?? '') === 'saas-lab'): ?>
+                        <a class="text-link text-link--workshop" href="/saas-lab/">Enter SaaS Lab <span aria-hidden="true">→</span></a>
+                    <?php endif; ?>
                 </div>
             </article>
         </section>
