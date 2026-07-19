@@ -18,7 +18,7 @@ function e(string $value): string
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="The workshop journal of Iain Reid, an independent software developer building practical systems, experiments, and digital tools.">
     <title>Iain Reid — The Workshop Journal</title>
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css?v=20260719b">
 </head>
 <body>
     <div class="ambient-light" aria-hidden="true"></div>
@@ -136,14 +136,16 @@ function e(string $value): string
             </div>
         </section>
 
-        <section class="section maker-section" id="about">
-            <div class="maker-portrait" data-reveal>
+        <section class="section maker-section" id="about" data-reveal>
+            <div class="maker-portrait">
                 <img
                     src="assets/images/portrait.jpg"
                     alt="Portrait of Iain Reid"
-                    loading="lazy">
+                    width="400"
+                    height="500"
+                    decoding="async">
             </div>
-            <div class="maker-copy" data-reveal>
+            <div class="maker-copy">
                 <p class="kicker">A note about the maker</p>
                 <h2>Software as craftsmanship</h2>
                 <p>I build because I like turning vague ideas into systems people can actually use. My work sits between product design, engineering, experimentation, and the practical application of modern AI tools.</p>
@@ -152,16 +154,16 @@ function e(string $value): string
                 <ul class="maker-contact">
                     <li>
                         <a href="mailto:iain@iainreid.dev">
-                            <svg class="contact-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                                <path d="M3 6.75A1.75 1.75 0 0 1 4.75 5h14.5A1.75 1.75 0 0 1 21 6.75v10.5A1.75 1.75 0 0 1 19.25 19H4.75A1.75 1.75 0 0 1 3 17.25V6.75Zm1.75-.25a.25.25 0 0 0-.25.25v.3l7.1 4.62c.25.16.55.16.8 0l7.1-4.62v-.3a.25.25 0 0 0-.25-.25H4.75Zm15.5 2.52-6.55 4.26a2.25 2.25 0 0 1-2.4 0L4.75 9.02v8.23c0 .14.11.25.25.25h14.5a.25.25 0 0 0 .25-.25V9.02Z"/>
+                            <svg class="contact-icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false">
+                                <path fill="currentColor" d="M3 6.75A1.75 1.75 0 0 1 4.75 5h14.5A1.75 1.75 0 0 1 21 6.75v10.5A1.75 1.75 0 0 1 19.25 19H4.75A1.75 1.75 0 0 1 3 17.25V6.75Zm1.75-.25a.25.25 0 0 0-.25.25v.3l7.1 4.62c.25.16.55.16.8 0l7.1-4.62v-.3a.25.25 0 0 0-.25-.25H4.75Zm15.5 2.52-6.55 4.26a2.25 2.25 0 0 1-2.4 0L4.75 9.02v8.23c0 .14.11.25.25.25h14.5a.25.25 0 0 0 .25-.25V9.02Z"/>
                             </svg>
                             <span>iain@iainreid.dev</span>
                         </a>
                     </li>
                     <li>
                         <a href="https://x.com/realiainreid" target="_blank" rel="noopener noreferrer">
-                            <svg class="contact-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.727-8.835L1.992 2.25H8.08l4.259 5.686L18.244 2.25Zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77Z"/>
+                            <svg class="contact-icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false">
+                                <path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.727-8.835L1.992 2.25H8.08l4.259 5.686L18.244 2.25Zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77Z"/>
                             </svg>
                             <span>@realiainreid</span>
                         </a>
@@ -176,6 +178,6 @@ function e(string $value): string
         <span>Workshop record · <?= date('Y') ?></span>
     </footer>
 
-    <script src="assets/js/app.js"></script>
+    <script src="assets/js/app.js?v=20260719b"></script>
 </body>
 </html>
