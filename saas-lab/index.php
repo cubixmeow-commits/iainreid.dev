@@ -1,4 +1,13 @@
-<!DOCTYPE html>
+<?php
+
+declare(strict_types=1);
+
+// Shared SaaS Lab account system: gives this page an auth-state-aware account
+// entry point. The bootstrap starts the session and wires the helpers. This is
+// the only backend touch on the lab page; the layout below is unchanged.
+require __DIR__ . '/../includes/bootstrap.php';
+
+?><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -14,6 +23,7 @@
     <link rel="canonical" href="https://iainreid.dev/site/saas-lab/">
     <link rel="stylesheet" href="../assets/css/style.css?v=20260719g">
     <link rel="stylesheet" href="../assets/css/saas-lab.css?v=20260719a">
+    <link rel="stylesheet" href="../assets/css/auth.css?v=20260719a">
 </head>
 <body>
     <div class="ambient-light" aria-hidden="true"></div>
@@ -42,6 +52,17 @@
             <a href="#experiments">Experiments</a>
             <a href="#method">Method</a>
             <a href="#principles">Principles</a>
+            <span class="lab-account-nav" role="group" aria-label="Lab access">
+                <?php if (is_logged_in()): ?>
+                    <?php if (is_admin()): ?>
+                        <a class="btn btn--ghost" href="<?= e(url('admin/')) ?>">Admin</a>
+                    <?php endif; ?>
+                    <a class="btn btn--ghost" href="<?= e(url('auth/account.php')) ?>">Account</a>
+                <?php else: ?>
+                    <a class="btn btn--ghost" href="<?= e(url('auth/login.php')) ?>">Log in</a>
+                    <a class="btn btn--primary" href="<?= e(url('auth/register.php')) ?>">Create account</a>
+                <?php endif; ?>
+            </span>
         </nav>
     </header>
 

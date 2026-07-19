@@ -4,7 +4,25 @@ Thumbs.db
 *.log
 .env
 .env.*
+!.env.example
 config.local.php
+
+# SaaS Lab SQLite database and its runtime sidecar files (never commit real
+# accounts). The protective data/.htaccess and data/index.php are NOT ignored.
+*.sqlite
+*.sqlite3
+*.db
+*.sqlite-wal
+*.sqlite-shm
+*.sqlite-journal
+*.db-wal
+*.db-shm
+*.db-journal
+
+# PHP session files and local backups
+sess_*
+*.bak
+*.tmp
 
 # Editor
 .idea/
