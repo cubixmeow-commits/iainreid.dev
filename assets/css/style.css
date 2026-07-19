@@ -254,10 +254,16 @@ nav a:hover { color: var(--paper-light); }
 .card-etching::before, .card-etching::after { content: ""; position: absolute; inset: 18%; border: 1px solid rgba(210,173,98,.12); rotate: 45deg; }
 .card-etching::after { inset: 36%; rotate: 0deg; border-radius: 50%; }
 
-.maker-section { display: grid; grid-template-columns: .75fr 1.25fr; gap: clamp(2rem, 8vw, 8rem); align-items: center; }
+.maker-section {
+    display: grid;
+    grid-template-columns: 13rem minmax(0, 1fr);
+    gap: clamp(1.75rem, 5vw, 4rem);
+    align-items: start;
+}
 .maker-portrait {
     position: relative;
-    width: min(100%, 22rem);
+    width: 13rem;
+    max-width: 100%;
     min-width: 0;
     overflow: hidden;
     aspect-ratio: 4 / 5;
@@ -289,8 +295,9 @@ nav a:hover { color: var(--paper-light); }
 .signature { margin-top: 2rem; color: var(--brass-light); font-family: var(--serif); font-size: 2rem; font-style: italic; transform: rotate(-3deg); transform-origin: left; }
 .maker-contact {
     display: flex;
-    flex-wrap: wrap;
-    gap: .85rem 1.75rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: .7rem;
     margin: 1.75rem 0 0;
     padding: 0;
     list-style: none;
@@ -311,9 +318,11 @@ nav a:hover { color: var(--paper-light); }
     color: var(--brass-light);
 }
 .contact-icon {
-    width: .95rem;
-    height: .95rem;
-    flex-shrink: 0;
+    display: block;
+    width: 1rem;
+    height: 1rem;
+    flex: 0 0 1rem;
+    overflow: hidden;
     fill: currentColor;
     opacity: .78;
 }
@@ -336,11 +345,13 @@ footer { display: flex; justify-content: space-between; width: min(100% - 2rem, 
     .blueprint { grid-template-columns: 1fr; }
     .blueprint__diagram { border-right: 0; border-bottom: 1px solid rgba(166,208,197,.2); }
     .artifact-grid { grid-template-columns: 1fr 1fr; }
-    .maker-section { grid-template-columns: 1fr; justify-items: start; }
+    .maker-section {
+        grid-template-columns: 1fr;
+        justify-items: start;
+    }
     .maker-portrait {
-        width: 12.5rem;
-        max-width: 42vw;
-        margin: 0;
+        width: 11rem;
+        max-width: 40vw;
     }
 }
 
@@ -357,8 +368,8 @@ footer { display: flex; justify-content: space-between; width: min(100% - 2rem, 
     .blueprint__diagram { min-height: 18rem; }
     .spec-list div { grid-template-columns: 5rem 1fr; }
     .maker-portrait {
-        width: 10rem;
-        max-width: 38vw;
+        width: 9.5rem;
+        max-width: 36vw;
     }
     footer { width: calc(100% - 1.25rem); flex-direction: column; gap: .4rem; }
 }
