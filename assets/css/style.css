@@ -233,7 +233,16 @@ nav a:focus-visible { color: var(--paper-light); }
 .page-number { align-self: flex-start; font-family: var(--display); font-size: .66rem; letter-spacing: .16em; text-transform: uppercase; }
 .journal-sigil { width: min(70%, 17rem); fill: none; stroke: rgba(47,36,23,.62); stroke-width: 1.2; }
 .margin-note { max-width: 19rem; font-family: var(--serif); font-style: italic; font-size: 1.05rem; }
-.maker-seal { display: grid; place-items: center; width: 4.4rem; aspect-ratio: 1; border-radius: 50%; color: #c79568; background: radial-gradient(circle at 35% 30%, #953e2b, #541d17 72%); border: 3px double #3e140f; font-family: var(--display); box-shadow: 0 4px 8px rgba(39,16,9,.3); }
+.maker-seal {
+    display: block;
+    width: 4.6rem;
+    height: 4.6rem;
+    fill: none;
+    stroke: rgba(74, 52, 28, .78);
+    stroke-width: 1.4;
+    stroke-linecap: square;
+    stroke-linejoin: miter;
+}
 .kicker { margin: 0 0 .7rem; color: var(--brass-light); font-family: var(--display); font-size: .7rem; letter-spacing: .16em; text-transform: uppercase; }
 .journal .kicker { color: #69522c; }
 .journal h1 { font-size: clamp(3rem, 7vw, 6.5rem); }
