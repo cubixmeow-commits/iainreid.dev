@@ -12,9 +12,6 @@ config.local.php
 *.swp
 *.swo
 
-# Local deploy marker (production marker is written by .cpanel.yml)
-public/.portfolio-root
-
 # Dependency / build leftovers if introduced later
 node_modules/
 vendor/
