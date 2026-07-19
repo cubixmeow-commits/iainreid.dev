@@ -43,7 +43,7 @@ function e(string $value): string
         <nav id="site-nav" aria-label="Primary navigation">
             <a href="#journal">Journal</a>
             <a href="#workshop">Workshop</a>
-            <a href="/saas-lab/">SaaS Lab</a>
+            <a href="/site/saas-lab/">SaaS Lab</a>
             <a href="#archive">Archive</a>
             <a href="#about">The Maker</a>
         </nav>
@@ -112,7 +112,7 @@ function e(string $value): string
                         <div><dt>Purpose</dt><dd>Rapidly test whether an idea deserves to become a product.</dd></div>
                     </dl>
                     <?php if (($current['slug'] ?? '') === 'saas-lab'): ?>
-                        <a class="text-link text-link--workshop" href="/saas-lab/">Enter SaaS Lab <span aria-hidden="true">→</span></a>
+                        <a class="text-link text-link--workshop" href="/site/saas-lab/">Enter SaaS Lab <span aria-hidden="true">→</span></a>
                     <?php endif; ?>
                 </div>
             </article>
