@@ -18,7 +18,7 @@ function e(string $value): string
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="The workshop journal of Iain Reid, an independent software developer building practical systems, experiments, and digital tools.">
     <title>Iain Reid — The Workshop Journal</title>
-    <link rel="stylesheet" href="assets/css/style.css?v=20260719b">
+    <link rel="stylesheet" href="assets/css/style.css?v=20260719c">
 </head>
 <body>
     <div class="ambient-light" aria-hidden="true"></div>
@@ -32,7 +32,15 @@ function e(string $value): string
                 <small>Independent software developer</small>
             </span>
         </a>
-        <nav aria-label="Primary navigation">
+        <button
+            class="nav-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="site-nav"
+            aria-label="Open menu">
+            <span class="nav-toggle__bars" aria-hidden="true"></span>
+        </button>
+        <nav id="site-nav" aria-label="Primary navigation">
             <a href="#journal">Journal</a>
             <a href="#workshop">Workshop</a>
             <a href="#archive">Archive</a>
@@ -178,6 +186,6 @@ function e(string $value): string
         <span>Workshop record · <?= date('Y') ?></span>
     </footer>
 
-    <script src="assets/js/app.js?v=20260719b"></script>
+    <script src="assets/js/app.js?v=20260719c"></script>
 </body>
 </html>
