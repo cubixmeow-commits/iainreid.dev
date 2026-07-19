@@ -18,7 +18,7 @@ function e(string $value): string
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="The workshop journal of Iain Reid, an independent software developer building practical systems, experiments, and digital tools.">
     <title>Iain Reid — The Workshop Journal</title>
-    <link rel="stylesheet" href="assets/css/style.css?v=20260719d">
+    <link rel="stylesheet" href="assets/css/style.css?v=20260719e">
 </head>
 <body>
     <div class="ambient-light" aria-hidden="true"></div>
@@ -66,16 +66,6 @@ function e(string $value): string
                         <circle cx="80" cy="80" r="7"/>
                     </svg>
                     <p class="margin-note">A record of useful machines, unfinished ideas, and the systems that survived the forge.</p>
-                    <svg class="maker-seal" viewBox="0 0 120 120" role="img" aria-label="Maker's mark for Iain Reid">
-                        <circle cx="60" cy="60" r="54"/>
-                        <circle cx="60" cy="60" r="47"/>
-                        <circle cx="60" cy="60" r="30"/>
-                        <path d="M60 10v10M60 100v10M10 60h10M100 60h10"/>
-                        <path d="M24 24l7 7M96 24l-7 7M24 96l7-7M96 96l-7-7"/>
-                        <path d="M60 36v8M60 76v8M36 60h8M76 60h8"/>
-                        <path d="M41 48v24M35 48h12M35 72h12"/>
-                        <path d="M62 72V48h13c7 0 12 3.6 12 9.2S82 66.4 75 66.4H62M73 66.4 86 72"/>
-                    </svg>
                 </article>
 
                 <article class="journal-page journal-page--right">
