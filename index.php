@@ -43,7 +43,7 @@ function e(string $value): string
         <nav id="site-nav" aria-label="Primary navigation">
             <a href="#journal">Journal</a>
             <a href="#workshop">Workshop</a>
-            <a href="/site/saas-lab/">SaaS Lab</a>
+            <a href="https://cubixmeow.com/iain/projects/sousmeow/public/">SousMeow</a>
             <a href="#archive">Archive</a>
             <a href="#about">The Maker</a>
         </nav>
@@ -97,8 +97,8 @@ function e(string $value): string
                         <path d="M72 82h88M72 104h58M360 256h84M386 278h58"/>
                         <path d="M92 262c38-58 82-75 132-52M296 148c45-34 91-29 136 16"/>
                     </svg>
-                    <span class="diagram-label diagram-label--a">validation loop</span>
-                    <span class="diagram-label diagram-label--b">experiment ledger</span>
+                    <span class="diagram-label diagram-label--a">guided workflow</span>
+                    <span class="diagram-label diagram-label--b">quality checks</span>
                 </div>
 
                 <div class="blueprint__content">
@@ -109,10 +109,10 @@ function e(string $value): string
                     <dl class="spec-list">
                         <div><dt>Status</dt><dd><?= e($current['status']) ?></dd></div>
                         <div><dt>Materials</dt><dd><?= e(implode(' · ', $current['materials'])) ?></dd></div>
-                        <div><dt>Purpose</dt><dd>Rapidly test whether an idea deserves to become a product.</dd></div>
+                        <div><dt>Purpose</dt><dd>Guide people through complete AI-powered tasks using the subscriptions they already have.</dd></div>
                     </dl>
-                    <?php if (($current['slug'] ?? '') === 'saas-lab'): ?>
-                        <a class="text-link text-link--workshop" href="/site/saas-lab/">Enter SaaS Lab <span aria-hidden="true">→</span></a>
+                    <?php if (!empty($current['url'])): ?>
+                        <a class="text-link text-link--workshop" href="<?= e($current['url']) ?>">Enter <?= e($current['title']) ?> <span aria-hidden="true">→</span></a>
                     <?php endif; ?>
                 </div>
             </article>
