@@ -19,7 +19,7 @@ if (is_array($payload) && isset($payload['answer']) && is_string($payload['answe
     $answer = strtolower(trim($payload['answer']));
 }
 
-// SHA-256 of the expected passphrase — never store the plaintext answer here.
+// SHA-256 of the expected passphrase. Never store the plaintext answer here.
 $expected = '1e8c36fe36363beaf43717f01c363b345392af1bfa9d703e01827f44ebf062ad';
 $submitted = hash('sha256', $answer);
 

@@ -206,7 +206,7 @@ function e(string $value): string
             <p id="showdown-riddle" class="showdown-modal__riddle">
                 The benches are oak, the shelves remember ash, and every board once stood rooted.
                 Yet I am not timber, nor grain, nor the forest itself.
-                Scholars borrowed me from the Latin wood to name the green wild’s own nature —
+                Scholars borrowed me from the Latin wood to name the green wild’s own nature:
                 grove-born, leaf-kin, of the woodland kind.
                 Speak that six-letter epithet.
             </p>
