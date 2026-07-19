@@ -18,7 +18,7 @@ function e(string $value): string
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="The workshop journal of Iain Reid, an independent software developer building practical systems, experiments, and digital tools.">
     <title>Iain Reid — The Workshop Journal</title>
-    <link rel="stylesheet" href="assets/css/style.css?v=20260719f">
+    <link rel="stylesheet" href="assets/css/style.css?v=20260719g">
 </head>
 <body>
     <div class="ambient-light" aria-hidden="true"></div>
@@ -186,9 +186,47 @@ function e(string $value): string
 
     <footer>
         <span>iainreid.dev</span>
+        <button class="showdown-link" type="button" data-showdown-open>
+            Toward the showdown
+        </button>
         <span>Workshop record · <?= date('Y') ?></span>
     </footer>
 
-    <script src="assets/js/app.js?v=20260719c"></script>
+    <div class="showdown-modal" id="showdown-modal" hidden>
+        <div class="showdown-modal__backdrop" data-showdown-close tabindex="-1"></div>
+        <div
+            class="showdown-modal__panel"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="showdown-title"
+            aria-describedby="showdown-riddle">
+            <button class="showdown-modal__close" type="button" data-showdown-close aria-label="Close">×</button>
+            <p class="kicker">Sealed folio · Showdown</p>
+            <h2 id="showdown-title">A riddle from the workshop</h2>
+            <p id="showdown-riddle" class="showdown-modal__riddle">
+                The benches are oak, the shelves remember ash, and every board once stood rooted.
+                Yet I am not timber, nor grain, nor the forest itself.
+                Scholars borrowed me from the Latin wood to name the green wild’s own nature —
+                grove-born, leaf-kin, of the woodland kind.
+                Speak that six-letter epithet.
+            </p>
+            <form class="showdown-modal__form" id="showdown-form" novalidate>
+                <label class="showdown-modal__label" for="showdown-answer">Your answer</label>
+                <input
+                    class="showdown-modal__input"
+                    id="showdown-answer"
+                    name="answer"
+                    type="text"
+                    autocomplete="off"
+                    spellcheck="false"
+                    maxlength="64"
+                    required>
+                <button class="showdown-modal__submit" type="submit">Unseal the gate</button>
+                <p class="showdown-modal__feedback" id="showdown-feedback" role="status" aria-live="polite"></p>
+            </form>
+        </div>
+    </div>
+
+    <script src="assets/js/app.js?v=20260719d"></script>
 </body>
 </html>
