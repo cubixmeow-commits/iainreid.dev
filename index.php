@@ -137,13 +137,11 @@ function e(string $value): string
         </section>
 
         <section class="section maker-section" id="about">
-            <div class="maker-portrait" data-reveal aria-hidden="true">
-                <svg viewBox="0 0 300 380">
-                    <rect x="20" y="20" width="260" height="340" rx="130"/>
-                    <circle cx="150" cy="132" r="58"/>
-                    <path d="M72 315c12-86 52-128 78-128s66 42 78 128"/>
-                    <path d="M112 122c18-14 58-14 76 0M126 151c14 10 34 10 48 0"/>
-                </svg>
+            <div class="maker-portrait" data-reveal>
+                <img
+                    src="assets/images/portrait.jpg"
+                    alt="Portrait of Iain Reid"
+                    loading="lazy">
             </div>
             <div class="maker-copy" data-reveal>
                 <p class="kicker">A note about the maker</p>
@@ -151,6 +149,24 @@ function e(string $value): string
                 <p>I build because I like turning vague ideas into systems people can actually use. My work sits between product design, engineering, experimentation, and the practical application of modern AI tools.</p>
                 <p>This archive is not arranged as a list of technologies. It is a record of problems studied, mechanisms designed, and useful things made.</p>
                 <div class="signature">Iain Reid</div>
+                <ul class="maker-contact">
+                    <li>
+                        <a href="mailto:iain@iainreid.dev">
+                            <svg class="contact-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                <path d="M3 6.75A1.75 1.75 0 0 1 4.75 5h14.5A1.75 1.75 0 0 1 21 6.75v10.5A1.75 1.75 0 0 1 19.25 19H4.75A1.75 1.75 0 0 1 3 17.25V6.75Zm1.75-.25a.25.25 0 0 0-.25.25v.3l7.1 4.62c.25.16.55.16.8 0l7.1-4.62v-.3a.25.25 0 0 0-.25-.25H4.75Zm15.5 2.52-6.55 4.26a2.25 2.25 0 0 1-2.4 0L4.75 9.02v8.23c0 .14.11.25.25.25h14.5a.25.25 0 0 0 .25-.25V9.02Z"/>
+                            </svg>
+                            <span>iain@iainreid.dev</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://x.com/realiainreid" target="_blank" rel="noopener noreferrer">
+                            <svg class="contact-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.727-8.835L1.992 2.25H8.08l4.259 5.686L18.244 2.25Zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77Z"/>
+                            </svg>
+                            <span>@realiainreid</span>
+                        </a>
+                    </li>
+                </ul>
             </div>
         </section>
     </main>
