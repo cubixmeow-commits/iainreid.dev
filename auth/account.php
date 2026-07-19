@@ -49,5 +49,36 @@ render_page_top('Your account', 'account');
         <button type="submit" class="btn btn--quiet">Log out</button>
     </form>
 </section>
+
+<section class="auth-card" aria-labelledby="private-title">
+    <p class="mono">Lab Access · Private experiments</p>
+    <h1 id="private-title">Private experiments</h1>
+    <?php if (is_admin()): ?>
+        <p class="auth-note">
+            You are an administrator. Manage every experiment and its testers in
+            the registry.
+        </p>
+        <p><a class="btn btn--ghost" href="<?= e(url('admin/experiments.php')) ?>">Open experiment registry</a></p>
+    <?php else: ?>
+        <?php $invited = list_user_invited_experiments((int) $user['id']); ?>
+        <?php if ($invited === []): ?>
+            <p class="auth-note">You have no private experiments yet. When you are invited to test one, it will appear here.</p>
+        <?php else: ?>
+            <ul class="private-list">
+                <?php foreach ($invited as $exp): ?>
+                    <li class="private-list__item">
+                        <div>
+                            <a class="private-list__name" href="<?= e(url('x/' . rawurlencode($exp['slug']) . '.php')) ?>"><?= e($exp['name']) ?></a>
+                            <span class="tag"><?= e($exp['status']) ?></span>
+                            <?php if ($exp['description'] !== ''): ?>
+                                <p class="private-list__desc"><?= e($exp['description']) ?></p>
+                            <?php endif; ?>
+                        </div>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
+    <?php endif; ?>
+</section>
 <?php
 render_page_bottom();

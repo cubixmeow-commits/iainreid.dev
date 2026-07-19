@@ -59,3 +59,25 @@ curl -I https://iainreid.dev/site/data/saas-lab.sqlite
 
 Expected: **403 Forbidden** (404 also acceptable). A 200 / file download is a
 deployment blocker — fix `data/.htaccess` and permissions before proceeding.
+
+## Gated experiments (`x/`)
+
+The deployment now also copies the `x/` directory (gated experiment routes, e.g.
+`x/hello.php` served at `https://iainreid.dev/site/x/hello.php`). The
+`experiments/` template folder and `docs/` are intentionally **not** deployed.
+
+### Stale gated-route files (important)
+
+The cPanel deploy is **copy-only** — it never deletes files the repository
+removed or renamed. If you rename or replace a gated route, the **old, possibly
+ungated file stays live on the server and can bypass the gate**. After any such
+change, remove the stale file over SSH, for example:
+
+```bash
+rm -f ~/public_html/site/x/old-name.php
+# or an entire renamed experiment folder:
+rm -rf ~/public_html/site/x/old-slug
+```
+
+Then re-verify the old URL returns 404 and the new one is gated. See
+`docs/EXPERIMENT_VISIBILITY.md` for the full verification procedure.

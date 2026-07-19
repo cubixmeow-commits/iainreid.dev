@@ -26,6 +26,7 @@ define('SAAS_LAB_CONFIG', require __DIR__ . '/config.php');
 require __DIR__ . '/auth.php';
 require __DIR__ . '/database.php';
 require __DIR__ . '/csrf.php';
+require __DIR__ . '/experiments.php';
 
 // Configure and start the session for web requests. No-op under the CLI so the
 // admin creation script can reuse this bootstrap.

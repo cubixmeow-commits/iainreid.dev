@@ -27,6 +27,8 @@ render_page_top('Admin console', 'admin');
     <p class="mono">Admin console · User registry</p>
     <h1 id="admin-title">Admin console</h1>
 
+    <p><a class="btn btn--ghost" href="<?= e(url('admin/experiments.php')) ?>">Experiment registry →</a></p>
+
     <ul class="summary" aria-label="Account totals">
         <li class="summary__stat">
             <span class="summary__value"><?= e((string) $total) ?></span>

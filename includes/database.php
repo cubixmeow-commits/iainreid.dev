@@ -108,6 +108,47 @@ function init_schema(PDO $pdo): void
     // Unique index on the (already normalised) email as the final authority for
     // duplicate prevention, independent of the inline column constraint.
     $pdo->exec('CREATE UNIQUE INDEX IF NOT EXISTS idx_users_email ON users (email)');
+
+    // --- Private-first experiment visibility -----------------------------
+    //
+    // visibility answers "who can access this?" (authorization). status answers
+    // "where is this in the loop?" (informational). They are separate columns;
+    // authorization is derived only from visibility, never from status.
+    //
+    // route_path is a DISPLAY-ONLY admin annotation. It is never used to route,
+    // redirect, include, or authorize anything.
+    $pdo->exec(
+        "CREATE TABLE IF NOT EXISTS experiments (
+            id              INTEGER PRIMARY KEY AUTOINCREMENT,
+            experiment_code TEXT NOT NULL UNIQUE,
+            slug            TEXT NOT NULL UNIQUE,
+            name            TEXT NOT NULL,
+            description     TEXT NOT NULL DEFAULT '',
+            visibility      TEXT NOT NULL DEFAULT 'private'
+                                CHECK (visibility IN ('private','invite','public')),
+            route_path      TEXT NULL,
+            status          TEXT NOT NULL DEFAULT 'framing',
+            created_by      INTEGER NOT NULL REFERENCES users(id),
+            created_at      TEXT NOT NULL,
+            updated_at      TEXT NOT NULL,
+            published_at    TEXT NULL
+        )"
+    );
+    $pdo->exec('CREATE INDEX IF NOT EXISTS idx_experiments_visibility ON experiments (visibility)');
+
+    // Invitations apply only to existing registered users. The composite primary
+    // key prevents duplicate invites. Foreign keys are enforced because db()
+    // sets PRAGMA foreign_keys = ON.
+    $pdo->exec(
+        "CREATE TABLE IF NOT EXISTS experiment_invites (
+            experiment_id INTEGER NOT NULL REFERENCES experiments(id),
+            user_id       INTEGER NOT NULL REFERENCES users(id),
+            created_by    INTEGER NOT NULL REFERENCES users(id),
+            created_at    TEXT NOT NULL,
+            PRIMARY KEY (experiment_id, user_id)
+        )"
+    );
+    $pdo->exec('CREATE INDEX IF NOT EXISTS idx_experiment_invites_user ON experiment_invites (user_id)');
 }
 
 /**
