@@ -11,7 +11,7 @@ return [
         'status' => 'Active',
         'materials' => ['HTML', 'CSS', 'Vanilla JavaScript'],
         'mark' => 'I',
-        'url' => '/saas-lab/',
+        'url' => '/site/saas-lab/',
     ],
     [
         'slug' => 'sousmeow',
