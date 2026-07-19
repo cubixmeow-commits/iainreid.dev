@@ -12,7 +12,7 @@ declare(strict_types=1);
  *   php scripts/seed-demo-experiment.php --email="admin@example.com"
  *
  * The --email must belong to an existing administrator; it becomes created_by.
- * The demo is seeded as visibility=private, status=framing so you can exercise
+ * The demo is seeded as visibility=private, status=inbox so you can exercise
  * private -> invite -> public. If a "hello" row already exists, nothing changes.
  *
  * Exit codes: 0 success (or already present), 1 db/write error, 2 usage error.
@@ -76,7 +76,7 @@ try {
         ':desc'    => 'A content-free demo that proves the visibility gate works end to end.',
         ':vis'     => 'private',
         ':route'   => '/site/x/hello.php',
-        ':status'  => 'framing',
+        ':status'  => 'inbox',
         ':by'      => (int) $admin['id'],
         ':created' => $now,
         ':updated' => $now,

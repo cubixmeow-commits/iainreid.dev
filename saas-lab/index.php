@@ -3,9 +3,12 @@
 declare(strict_types=1);
 
 // Shared SaaS Lab account system: gives this page an auth-state-aware account
-// entry point. The bootstrap starts the session and wires the helpers. This is
-// the only backend touch on the lab page; the layout below is unchanged.
+// entry point. The bootstrap starts the session and wires the helpers.
+// Public idea counts come from the database; private/invite ideas never appear.
 require __DIR__ . '/../includes/bootstrap.php';
+
+$publicIdeaCount = count_public_ideas();
+$publicIdeaCountLabel = str_pad((string) $publicIdeaCount, 2, '0', STR_PAD_LEFT);
 
 ?><!DOCTYPE html>
 <html lang="en">
@@ -55,6 +58,7 @@ require __DIR__ . '/../includes/bootstrap.php';
             <span class="lab-account-nav" role="group" aria-label="Lab access">
                 <?php if (is_logged_in()): ?>
                     <?php if (is_admin()): ?>
+                        <a class="btn btn--ghost" href="<?= e(url('admin/experiments.php')) ?>">Ideas</a>
                         <a class="btn btn--ghost" href="<?= e(url('admin/')) ?>">Admin</a>
                     <?php endif; ?>
                     <a class="btn btn--ghost" href="<?= e(url('auth/account.php')) ?>">Account</a>
@@ -75,7 +79,7 @@ require __DIR__ . '/../includes/bootstrap.php';
                 <p class="lab-hero__lede">A system for testing software ideas before overbuilding them.</p>
                 <p class="lab-hero__copy">I build focused, deployable experiments. Each one exists to learn whether an idea deserves more time and complexity, using the smallest version that can answer the question in real conditions.</p>
                 <div class="lab-hero__meta">
-                    <span><b>Open experiments</b> 03</span>
+                    <span><b>Public ideas</b> <?= e($publicIdeaCountLabel) ?></span>
                     <span><b>Method</b> problem to evidence</span>
                     <span><b>Bench</b> shared Linux hosting</span>
                 </div>

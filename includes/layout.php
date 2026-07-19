@@ -13,12 +13,13 @@ declare(strict_types=1);
 
 /**
  * Open an account-system page: <head>, shared header, and the start of <main>.
- * $active marks the current nav item ('account' or 'admin') for aria-current.
+ * $active marks the current nav item ('account', 'admin', or 'ideas') for aria-current.
  */
 function render_page_top(string $title, string $active = ''): void
 {
     $accountUrl = url('auth/account.php');
     $adminUrl = url('admin/');
+    $ideasUrl = url('admin/experiments.php');
     $labUrl = url('saas-lab/');
     ?>
 <!DOCTYPE html>
@@ -30,7 +31,7 @@ function render_page_top(string $title, string $active = ''): void
     <meta name="robots" content="noindex">
     <title><?= e($title) ?> · SaaS Lab</title>
     <link rel="stylesheet" href="<?= e(url('assets/css/style.css?v=20260719g')) ?>">
-    <link rel="stylesheet" href="<?= e(url('assets/css/auth.css?v=20260719a')) ?>">
+    <link rel="stylesheet" href="<?= e(url('assets/css/auth.css?v=20260719b')) ?>">
 </head>
 <body class="auth-body">
     <div class="ambient-light" aria-hidden="true"></div>
@@ -48,6 +49,7 @@ function render_page_top(string $title, string $active = ''): void
             <a href="<?= e($labUrl) ?>">SaaS Lab</a>
             <?php if (is_logged_in()): ?>
                 <?php if (is_admin()): ?>
+                    <a href="<?= e($ideasUrl) ?>"<?= $active === 'ideas' ? ' aria-current="page"' : '' ?>>Ideas</a>
                     <a href="<?= e($adminUrl) ?>"<?= $active === 'admin' ? ' aria-current="page"' : '' ?>>Admin</a>
                 <?php endif; ?>
                 <a href="<?= e($accountUrl) ?>"<?= $active === 'account' ? ' aria-current="page"' : '' ?>>Account</a>
