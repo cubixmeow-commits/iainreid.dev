@@ -10,18 +10,7 @@ require_admin();
 
 $admin = current_user();
 $errors = [];
-$create = ['experiment_code' => '', 'name' => '', 'slug' => '', 'description' => '', 'route_path' => '', 'visibility' => 'private', 'status' => 'framing'];
-
-/**
- * Trim a display-only value: strip control characters and cap length. route_path
- * is never routed/included/redirected, so no path-safety validation is needed
- * beyond this display hygiene.
- */
-function clean_display_value(string $value, int $max = 255): string
-{
-    $value = preg_replace('/[\x00-\x1F\x7F]+/', '', $value) ?? '';
-    return mb_substr(trim($value), 0, $max);
-}
+$create = ['name' => '', 'description' => ''];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!csrf_validate()) {
@@ -31,115 +20,77 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $action = (string) ($_POST['action'] ?? '');
 
         if ($action === 'create') {
-            $create['experiment_code'] = clean_display_value((string) ($_POST['experiment_code'] ?? ''), 64);
-            $create['name'] = clean_display_value((string) ($_POST['name'] ?? ''), 120);
-            $create['slug'] = strtolower(clean_display_value((string) ($_POST['slug'] ?? ''), 80));
-            $create['description'] = clean_display_value((string) ($_POST['description'] ?? ''), 500);
-            $create['route_path'] = clean_display_value((string) ($_POST['route_path'] ?? ''));
-            $create['visibility'] = (string) ($_POST['visibility'] ?? 'private');
-            $create['status'] = (string) ($_POST['status'] ?? 'framing');
+            $create['name'] = clean_idea_text((string) ($_POST['name'] ?? ''), 120);
+            $create['description'] = clean_idea_text((string) ($_POST['description'] ?? ''), 500);
 
-            if ($create['experiment_code'] === '') {
-                $errors['experiment_code'] = 'Enter an experiment code.';
-            }
             if ($create['name'] === '') {
-                $errors['name'] = 'Enter a name.';
+                $errors['name'] = 'Enter an idea name.';
             }
-            if ($create['slug'] === '' || !preg_match('/^[a-z0-9][a-z0-9-]*$/', $create['slug'])) {
-                $errors['slug'] = 'Slug must be lowercase letters, numbers, and hyphens.';
-            }
-            if (!is_valid_experiment_visibility($create['visibility'])) {
-                $errors['visibility'] = 'Invalid visibility.';
-            }
-            if (!is_valid_experiment_status($create['status'])) {
-                $errors['status'] = 'Invalid status.';
+            if ($create['description'] === '') {
+                $errors['description'] = 'Enter a one-sentence concept.';
             }
 
             if ($errors === []) {
-                $now = gmdate('Y-m-d H:i:s');
-                $publishedAt = $create['visibility'] === 'public' ? $now : null;
                 try {
-                    $stmt = db()->prepare(
-                        'INSERT INTO experiments
-                            (experiment_code, slug, name, description, visibility, route_path, status, created_by, created_at, updated_at, published_at)
-                         VALUES (:code, :slug, :name, :desc, :vis, :route, :status, :by, :created, :updated, :published)'
-                    );
-                    $stmt->execute([
-                        ':code'      => $create['experiment_code'],
-                        ':slug'      => $create['slug'],
-                        ':name'      => $create['name'],
-                        ':desc'      => $create['description'],
-                        ':vis'       => $create['visibility'],
-                        ':route'     => $create['route_path'] !== '' ? $create['route_path'] : null,
-                        ':status'    => $create['status'],
-                        ':by'        => (int) $admin['id'],
-                        ':created'   => $now,
-                        ':updated'   => $now,
-                        ':published' => $publishedAt,
-                    ]);
-                    $_SESSION['flash'] = 'Experiment "' . $create['slug'] . '" created.';
-                    redirect(url('admin/experiments.php'));
+                    $newId = create_idea($create['name'], $create['description'], (int) $admin['id']);
+                    $_SESSION['flash'] = 'Idea saved to Inbox.';
+                    redirect(url('admin/experiment.php?id=' . $newId));
                 } catch (PDOException $ex) {
-                    if ($ex->getCode() === '23000') {
-                        $errors[] = 'That experiment code or slug is already in use.';
-                    } else {
-                        $errors[] = 'Unable to create the experiment. Please try again.';
-                    }
-                }
-            }
-        } elseif ($action === 'set_visibility' || $action === 'set_status') {
-            $id = (int) ($_POST['id'] ?? 0);
-            $experiment = find_experiment_by_id($id);
-            if ($experiment === null) {
-                $errors[] = 'That experiment no longer exists.';
-            } else {
-                $now = gmdate('Y-m-d H:i:s');
-                if ($action === 'set_visibility') {
-                    $vis = (string) ($_POST['visibility'] ?? '');
-                    if (!is_valid_experiment_visibility($vis)) {
-                        $errors[] = 'Invalid visibility value.';
-                    } else {
-                        // Set published_at the first time it becomes public; keep
-                        // it when moving back to private/invite.
-                        $publishedAt = $experiment['published_at'];
-                        if ($vis === 'public' && $publishedAt === null) {
-                            $publishedAt = $now;
-                        }
-                        $stmt = db()->prepare(
-                            'UPDATE experiments SET visibility = :vis, published_at = :pub, updated_at = :now WHERE id = :id'
-                        );
-                        $stmt->execute([':vis' => $vis, ':pub' => $publishedAt, ':now' => $now, ':id' => $id]);
-                        $_SESSION['flash'] = 'Visibility updated for "' . $experiment['slug'] . '".';
-                        redirect(url('admin/experiments.php'));
-                    }
-                } else {
-                    $status = (string) ($_POST['status'] ?? '');
-                    if (!is_valid_experiment_status($status)) {
-                        $errors[] = 'Invalid status value.';
-                    } else {
-                        $stmt = db()->prepare('UPDATE experiments SET status = :status, updated_at = :now WHERE id = :id');
-                        $stmt->execute([':status' => $status, ':now' => $now, ':id' => $id]);
-                        $_SESSION['flash'] = 'Status updated for "' . $experiment['slug'] . '".';
-                        redirect(url('admin/experiments.php'));
-                    }
+                    $errors[] = 'Unable to create the idea. Please try again.';
                 }
             }
         }
     }
 }
 
+$filters = [
+    'q'          => trim((string) ($_GET['q'] ?? '')),
+    'status'     => (string) ($_GET['status'] ?? ''),
+    'priority'   => (string) ($_GET['priority'] ?? ''),
+    'visibility' => (string) ($_GET['visibility'] ?? ''),
+    'archive'    => (string) ($_GET['archive'] ?? 'active'),
+    'sort'       => (string) ($_GET['sort'] ?? 'updated'),
+];
+
+if ($filters['status'] !== '' && !is_valid_experiment_status($filters['status'])) {
+    $filters['status'] = '';
+}
+if ($filters['priority'] !== '' && !is_valid_experiment_priority($filters['priority'])) {
+    $filters['priority'] = '';
+}
+if ($filters['visibility'] !== '' && !is_valid_experiment_visibility($filters['visibility'])) {
+    $filters['visibility'] = '';
+}
+if (!in_array($filters['archive'], ['active', 'archived', 'all'], true)) {
+    $filters['archive'] = 'active';
+}
+if (!in_array($filters['sort'], ['updated', 'oldest', 'priority', 'name', 'stage'], true)) {
+    $filters['sort'] = 'updated';
+}
+
+$ideas = list_ideas_for_dashboard($filters);
+$counts = idea_dashboard_counts();
+$hasActiveFilters = $filters['q'] !== ''
+    || $filters['status'] !== ''
+    || $filters['priority'] !== ''
+    || $filters['visibility'] !== ''
+    || $filters['archive'] !== 'active'
+    || $filters['sort'] !== 'updated';
+
 $flash = $_SESSION['flash'] ?? null;
 unset($_SESSION['flash']);
 
-$experiments = db()->query('SELECT * FROM experiments ORDER BY created_at DESC, id DESC')->fetchAll();
-$inviteCounts = experiment_invite_counts();
-
-render_page_top('Experiment registry', 'admin');
+render_page_top('Ideas', 'ideas');
 ?>
-<section class="auth-card auth-card--wide" aria-labelledby="reg-title">
-    <p class="mono">Admin console · Experiment registry</p>
-    <h1 id="reg-title">Experiment registry</h1>
-    <p><a class="btn btn--quiet" href="<?= e(url('admin/')) ?>">← Admin console</a></p>
+<section class="auth-card auth-card--wide ideas-dash" aria-labelledby="ideas-title">
+    <header class="ideas-dash__header">
+        <div>
+            <p class="mono">SaaS Lab · Idea manager</p>
+            <h1 id="ideas-title">Ideas</h1>
+            <p class="auth-lede">Capture, organize, and move SaaS ideas forward.</p>
+        </div>
+        <a class="btn btn--primary" href="#new-idea">New idea</a>
+    </header>
 
     <?php if ($flash !== null): ?>
         <p class="flash" role="status"><?= e($flash) ?></p>
@@ -147,124 +98,162 @@ render_page_top('Experiment registry', 'admin');
 
     <?php render_error_summary(array_values($errors)); ?>
 
-    <h2 class="admin-subhead">Experiments</h2>
-    <?php if ($experiments === []): ?>
-        <p class="auth-note">No experiments registered yet.</p>
-    <?php else: ?>
-        <div class="table-scroll">
-            <table class="registry">
-                <thead>
-                    <tr>
-                        <th scope="col">Code</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Slug</th>
-                        <th scope="col">Route (note)</th>
-                        <th scope="col">Visibility</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Invites</th>
-                        <th scope="col">Updated</th>
-                        <th scope="col">Manage</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($experiments as $exp): ?>
-                        <tr>
-                            <td><?= e($exp['experiment_code']) ?></td>
-                            <td><?= e($exp['name']) ?></td>
-                            <td><?= e($exp['slug']) ?></td>
-                            <td><?= e((string) ($exp['route_path'] ?? '—')) ?></td>
-                            <td>
-                                <form method="post" class="inline-select">
-                                    <?= csrf_field() ?>
-                                    <input type="hidden" name="action" value="set_visibility">
-                                    <input type="hidden" name="id" value="<?= e((string) $exp['id']) ?>">
-                                    <label class="sr-only" for="vis-<?= e((string) $exp['id']) ?>">Visibility</label>
-                                    <select id="vis-<?= e((string) $exp['id']) ?>" name="visibility" onchange="this.form.submit()">
-                                        <?php foreach (EXPERIMENT_VISIBILITIES as $v): ?>
-                                            <option value="<?= e($v) ?>"<?= $exp['visibility'] === $v ? ' selected' : '' ?>><?= e($v) ?></option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                    <noscript><button type="submit">Set</button></noscript>
-                                </form>
-                            </td>
-                            <td>
-                                <form method="post" class="inline-select">
-                                    <?= csrf_field() ?>
-                                    <input type="hidden" name="action" value="set_status">
-                                    <input type="hidden" name="id" value="<?= e((string) $exp['id']) ?>">
-                                    <label class="sr-only" for="st-<?= e((string) $exp['id']) ?>">Status</label>
-                                    <select id="st-<?= e((string) $exp['id']) ?>" name="status" onchange="this.form.submit()">
-                                        <?php foreach (EXPERIMENT_STATUSES as $s): ?>
-                                            <option value="<?= e($s) ?>"<?= $exp['status'] === $s ? ' selected' : '' ?>><?= e($s) ?></option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                    <noscript><button type="submit">Set</button></noscript>
-                                </form>
-                            </td>
-                            <td><?= e((string) ($inviteCounts[(int) $exp['id']] ?? 0)) ?></td>
-                            <td><?= e($exp['updated_at']) ?></td>
-                            <td><a href="<?= e(url('admin/experiment.php?id=' . (int) $exp['id'])) ?>">Manage</a></td>
-                        </tr>
+    <ul class="summary ideas-summary" aria-label="Idea totals">
+        <li class="summary__stat">
+            <span class="summary__value"><?= e((string) $counts['active']) ?></span>
+            <span class="summary__label">Active</span>
+        </li>
+        <li class="summary__stat">
+            <span class="summary__value"><?= e((string) $counts['inbox']) ?></span>
+            <span class="summary__label">Inbox</span>
+        </li>
+        <li class="summary__stat">
+            <span class="summary__value"><?= e((string) $counts['building']) ?></span>
+            <span class="summary__label">Building</span>
+        </li>
+        <li class="summary__stat">
+            <span class="summary__value"><?= e((string) $counts['testing']) ?></span>
+            <span class="summary__label">Testing</span>
+        </li>
+        <li class="summary__stat">
+            <span class="summary__value"><?= e((string) $counts['launched']) ?></span>
+            <span class="summary__label">Launched</span>
+        </li>
+        <li class="summary__stat">
+            <span class="summary__value"><?= e((string) $counts['paused']) ?></span>
+            <span class="summary__label">Paused</span>
+        </li>
+    </ul>
+
+    <form method="get" action="<?= e(url('admin/experiments.php')) ?>" class="ideas-filters" role="search">
+        <div class="ideas-filters__row">
+            <div class="field ideas-filters__search">
+                <label for="q">Search ideas</label>
+                <input type="search" id="q" name="q" value="<?= e($filters['q']) ?>" placeholder="Name, problem, notes, next action…">
+            </div>
+            <div class="field">
+                <label for="status">Status</label>
+                <select id="status" name="status">
+                    <option value="">All stages</option>
+                    <?php foreach (EXPERIMENT_STATUSES as $s): ?>
+                        <option value="<?= e($s) ?>"<?= $filters['status'] === $s ? ' selected' : '' ?>><?= e(idea_status_label($s)) ?></option>
                     <?php endforeach; ?>
-                </tbody>
-            </table>
+                </select>
+            </div>
+            <div class="field">
+                <label for="priority">Priority</label>
+                <select id="priority" name="priority">
+                    <option value="">All priorities</option>
+                    <?php foreach (EXPERIMENT_PRIORITIES as $p): ?>
+                        <option value="<?= e($p) ?>"<?= $filters['priority'] === $p ? ' selected' : '' ?>><?= e(idea_priority_label($p)) ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="field">
+                <label for="visibility">Visibility</label>
+                <select id="visibility" name="visibility">
+                    <option value="">All access</option>
+                    <?php foreach (EXPERIMENT_VISIBILITIES as $v): ?>
+                        <option value="<?= e($v) ?>"<?= $filters['visibility'] === $v ? ' selected' : '' ?>><?= e($v) ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="field">
+                <label for="archive">Active / archived</label>
+                <select id="archive" name="archive">
+                    <option value="active"<?= $filters['archive'] === 'active' ? ' selected' : '' ?>>Active only</option>
+                    <option value="archived"<?= $filters['archive'] === 'archived' ? ' selected' : '' ?>>Archived only</option>
+                    <option value="all"<?= $filters['archive'] === 'all' ? ' selected' : '' ?>>All ideas</option>
+                </select>
+            </div>
+            <div class="field">
+                <label for="sort">Sort</label>
+                <select id="sort" name="sort">
+                    <option value="updated"<?= $filters['sort'] === 'updated' ? ' selected' : '' ?>>Recently updated</option>
+                    <option value="oldest"<?= $filters['sort'] === 'oldest' ? ' selected' : '' ?>>Oldest updated</option>
+                    <option value="priority"<?= $filters['sort'] === 'priority' ? ' selected' : '' ?>>Priority</option>
+                    <option value="name"<?= $filters['sort'] === 'name' ? ' selected' : '' ?>>Name</option>
+                    <option value="stage"<?= $filters['sort'] === 'stage' ? ' selected' : '' ?>>Stage</option>
+                </select>
+            </div>
         </div>
-    <?php endif; ?>
-
-    <h2 class="admin-subhead">Register a new experiment</h2>
-    <form method="post" action="<?= e(url('admin/experiments.php')) ?>" class="auth-form" novalidate>
-        <?= csrf_field() ?>
-        <input type="hidden" name="action" value="create">
-
-        <div class="field<?= isset($errors['experiment_code']) ? ' field--error' : '' ?>">
-            <label for="experiment_code">Experiment code</label>
-            <input type="text" id="experiment_code" name="experiment_code" value="<?= e($create['experiment_code']) ?>" required>
-            <?php if (isset($errors['experiment_code'])): ?><p class="field__error"><?= e($errors['experiment_code']) ?></p><?php endif; ?>
+        <div class="ideas-filters__actions">
+            <button type="submit" class="btn btn--ghost">Apply filters</button>
+            <?php if ($hasActiveFilters): ?>
+                <a class="btn btn--quiet" href="<?= e(url('admin/experiments.php')) ?>">Clear filters</a>
+            <?php endif; ?>
         </div>
-
-        <div class="field<?= isset($errors['name']) ? ' field--error' : '' ?>">
-            <label for="name">Name</label>
-            <input type="text" id="name" name="name" value="<?= e($create['name']) ?>" required>
-            <?php if (isset($errors['name'])): ?><p class="field__error"><?= e($errors['name']) ?></p><?php endif; ?>
-        </div>
-
-        <div class="field<?= isset($errors['slug']) ? ' field--error' : '' ?>">
-            <label for="slug">Slug</label>
-            <input type="text" id="slug" name="slug" value="<?= e($create['slug']) ?>" required>
-            <p class="field__hint">Lowercase letters, numbers, hyphens. Used by the page gate.</p>
-            <?php if (isset($errors['slug'])): ?><p class="field__error"><?= e($errors['slug']) ?></p><?php endif; ?>
-        </div>
-
-        <div class="field">
-            <label for="description">Description</label>
-            <input type="text" id="description" name="description" value="<?= e($create['description']) ?>">
-        </div>
-
-        <div class="field">
-            <label for="route_path">Route path <span class="field__hint">(display-only note; never used for routing)</span></label>
-            <input type="text" id="route_path" name="route_path" value="<?= e($create['route_path']) ?>">
-        </div>
-
-        <div class="field<?= isset($errors['visibility']) ? ' field--error' : '' ?>">
-            <label for="c-visibility">Visibility</label>
-            <select id="c-visibility" name="visibility">
-                <?php foreach (EXPERIMENT_VISIBILITIES as $v): ?>
-                    <option value="<?= e($v) ?>"<?= $create['visibility'] === $v ? ' selected' : '' ?>><?= e($v) ?></option>
-                <?php endforeach; ?>
-            </select>
-        </div>
-
-        <div class="field<?= isset($errors['status']) ? ' field--error' : '' ?>">
-            <label for="c-status">Status</label>
-            <select id="c-status" name="status">
-                <?php foreach (EXPERIMENT_STATUSES as $s): ?>
-                    <option value="<?= e($s) ?>"<?= $create['status'] === $s ? ' selected' : '' ?>><?= e($s) ?></option>
-                <?php endforeach; ?>
-            </select>
-        </div>
-
-        <button type="submit" class="btn btn--primary">Create experiment</button>
     </form>
+
+    <section class="ideas-capture" id="new-idea" aria-labelledby="capture-title">
+        <h2 class="admin-subhead" id="capture-title">Quick capture</h2>
+        <p class="auth-note">Name it, describe it in one sentence, and save it to Inbox. Stage, priority, and access stay private by default.</p>
+        <form method="post" action="<?= e(url('admin/experiments.php')) ?>" class="auth-form ideas-capture__form" novalidate>
+            <?= csrf_field() ?>
+            <input type="hidden" name="action" value="create">
+            <div class="field<?= isset($errors['name']) ? ' field--error' : '' ?>">
+                <label for="name">Idea name</label>
+                <input type="text" id="name" name="name" value="<?= e($create['name']) ?>" required maxlength="120" autocomplete="off">
+                <?php if (isset($errors['name'])): ?><p class="field__error"><?= e($errors['name']) ?></p><?php endif; ?>
+            </div>
+            <div class="field<?= isset($errors['description']) ? ' field--error' : '' ?>">
+                <label for="description">One-sentence concept</label>
+                <input type="text" id="description" name="description" value="<?= e($create['description']) ?>" required maxlength="500" autocomplete="off">
+                <?php if (isset($errors['description'])): ?><p class="field__error"><?= e($errors['description']) ?></p><?php endif; ?>
+            </div>
+            <button type="submit" class="btn btn--primary">Save to Inbox</button>
+        </form>
+    </section>
+
+    <h2 class="admin-subhead">Your ideas</h2>
+
+    <?php if ($ideas === []): ?>
+        <?php if ($hasActiveFilters): ?>
+            <div class="ideas-empty">
+                <p>No ideas match these filters.</p>
+                <p><a class="btn btn--ghost" href="<?= e(url('admin/experiments.php')) ?>">Clear filters</a></p>
+            </div>
+        <?php else: ?>
+            <div class="ideas-empty">
+                <p>No SaaS ideas yet.</p>
+                <p>Capture the first one before it disappears.</p>
+                <p><a class="btn btn--primary" href="#new-idea">New idea</a></p>
+            </div>
+        <?php endif; ?>
+    <?php else: ?>
+        <ul class="idea-list">
+            <?php foreach ($ideas as $idea): ?>
+                <?php
+                $workspaceUrl = url('admin/experiment.php?id=' . (int) $idea['id']);
+                $nextAction = trim((string) ($idea['next_action'] ?? ''));
+                $isPaused = $idea['status'] === 'paused';
+                $isArchived = $idea['status'] === 'archived';
+                ?>
+                <li class="idea-card<?= $isPaused ? ' idea-card--paused' : '' ?><?= $isArchived ? ' idea-card--archived' : '' ?>">
+                    <a class="idea-card__link" href="<?= e($workspaceUrl) ?>">
+                        <div class="idea-card__top">
+                            <span class="idea-card__code"><?= e($idea['experiment_code']) ?></span>
+                            <span class="idea-card__vis" title="Visibility"><?= e($idea['visibility']) ?></span>
+                        </div>
+                        <h3 class="idea-card__name"><?= e($idea['name']) ?></h3>
+                        <?php if ($idea['description'] !== ''): ?>
+                            <p class="idea-card__desc"><?= e($idea['description']) ?></p>
+                        <?php endif; ?>
+                        <div class="idea-card__meta">
+                            <span class="badge badge--status badge--<?= e($idea['status']) ?>"><?= e(idea_status_label($idea['status'])) ?></span>
+                            <span class="badge badge--priority badge--pri-<?= e($idea['priority'] ?? 'normal') ?>"><?= e(idea_priority_label((string) ($idea['priority'] ?? 'normal'))) ?></span>
+                            <span class="idea-card__updated">Updated <?= e(substr((string) $idea['updated_at'], 0, 10)) ?></span>
+                        </div>
+                        <p class="idea-card__next<?= $nextAction === '' ? ' idea-card__next--empty' : '' ?>">
+                            <span class="idea-card__next-label">Next action</span>
+                            <?= e($nextAction !== '' ? $nextAction : 'No next action set') ?>
+                        </p>
+                    </a>
+                    <p class="idea-card__open"><a href="<?= e($workspaceUrl) ?>">Open workspace</a></p>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    <?php endif; ?>
 </section>
 <?php
 render_page_bottom();

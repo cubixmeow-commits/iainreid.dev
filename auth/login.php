@@ -9,7 +9,7 @@ require __DIR__ . '/../includes/layout.php';
 $return = safe_return_path($_POST['return'] ?? $_GET['return'] ?? null);
 
 if (is_logged_in()) {
-    redirect($return ?? (is_admin() ? url('admin/') : url('auth/account.php')));
+    redirect($return ?? (is_admin() ? url('admin/experiments.php') : url('auth/account.php')));
 }
 
 $errors = [];

@@ -21,13 +21,14 @@ Two independent columns on the `experiments` table:
 
 - **visibility** — *who may access this?* This is authorization. One of
   `private`, `invite`, `public`.
-- **status** — *where is this in the loop?* This is informational only:
-  `framing`, `building`, `self-testing`, `invite-testing`, `public`, `archived`.
+- **status** — *where is this idea in its lifecycle?* This is informational only:
+  `inbox`, `exploring`, `validating`, `building`, `testing`, `launched`,
+  `paused`, `archived`.
 
 **Authorization is derived only from visibility (plus admin, plus invite). Never
-from status.** A status of `public` does not grant access; only
+from status.** A status of `launched` does not grant access; only
 `visibility = public` does. Archiving is a status, not a deletion and not an
-access rule.
+access rule. See `docs/SAAS_LAB.md` for the idea-manager model.
 
 ## The three states
 
@@ -65,16 +66,17 @@ $experiment = require_experiment_access('hello'); // FIRST action, before any ou
 // ... only now include layout and render ...
 ```
 
-## How to register an experiment
+## How to register an experiment / idea
 
 Registering a record does **not** create any code or directory — it is metadata.
 
-1. Log in as an administrator and open **Admin console → Experiment registry**
+1. Log in as an administrator and open **Ideas**
    (`/site/admin/experiments.php`).
-2. Fill in *experiment code*, *name*, *slug*, optional *description* and
-   *route path note*, *visibility* (default `private`), and *status* (default
-   `framing`). Submit.
-3. Build the actual page(s) under `x/<slug>...` and gate them (below).
+2. Capture an idea with *name* and *one-sentence concept* only. The system
+   assigns `IDEA-NNN`, a unique slug, `status = inbox`, `priority = normal`, and
+   `visibility = private`.
+3. Open the Idea workspace to refine fields, visibility, and invites.
+4. Build the actual page(s) under `x/<slug>...` and gate them (below).
 
 `route_path` is a **display-only note** so you can remember where a page lives.
 It is never used for routing, redirects, includes, or authorization.
@@ -115,7 +117,7 @@ shared bootstrap. Never gate only the homepage and leave internal routes open.
 ## How to invite an existing user
 
 Invites only matter while visibility is `invite`, and only apply to existing
-registered users. From **Experiment registry → Manage**:
+registered users. From **Ideas → Idea workspace → Tester invitations**:
 
 - Enter the user's email and *Add invite*. If no registered user matches, nothing
   is created or sent and you get an inline message.
@@ -126,10 +128,11 @@ user cannot invite anyone or change visibility; only admins manage invites.
 
 ## Moving private → invite → public, and archiving
 
-Change *visibility* in the registry (or on the Manage page). `published_at` is
-set the first time visibility becomes `public` and is preserved if you later move
-it back. To retire an experiment, set *status* to `archived` — the record and its
-data remain; there is no delete in this phase.
+Change *visibility* in the Idea workspace (Access and deployment). `published_at`
+is set the first time visibility becomes `public` and is preserved if you later
+move it back. To retire an idea, use *Archive idea* (POST + CSRF): `status`
+becomes `archived` and `archived_at` is set. *Restore idea* returns it to
+`inbox`. The record and its data remain; there is no delete in this phase.
 
 ## Where the framing Markdown is used
 

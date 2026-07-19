@@ -109,11 +109,14 @@ function init_schema(PDO $pdo): void
     // duplicate prevention, independent of the inline column constraint.
     $pdo->exec('CREATE UNIQUE INDEX IF NOT EXISTS idx_users_email ON users (email)');
 
-    // --- Private-first experiment visibility -----------------------------
+    // --- Private-first experiment visibility / SaaS idea records ---------
+    //
+    // The experiments table is the SaaS idea record. Internally the table and
+    // helpers may still say "experiment"; the admin UI uses "idea".
     //
     // visibility answers "who can access this?" (authorization). status answers
-    // "where is this in the loop?" (informational). They are separate columns;
-    // authorization is derived only from visibility, never from status.
+    // "where is this idea in its lifecycle?" (informational). They are separate
+    // columns; authorization is derived only from visibility, never from status.
     //
     // route_path is a DISPLAY-ONLY admin annotation. It is never used to route,
     // redirect, include, or authorize anything.
@@ -127,14 +130,25 @@ function init_schema(PDO $pdo): void
             visibility      TEXT NOT NULL DEFAULT 'private'
                                 CHECK (visibility IN ('private','invite','public')),
             route_path      TEXT NULL,
-            status          TEXT NOT NULL DEFAULT 'framing',
+            status          TEXT NOT NULL DEFAULT 'inbox',
             created_by      INTEGER NOT NULL REFERENCES users(id),
             created_at      TEXT NOT NULL,
             updated_at      TEXT NOT NULL,
-            published_at    TEXT NULL
+            published_at    TEXT NULL,
+            problem         TEXT NOT NULL DEFAULT '',
+            target_user     TEXT NOT NULL DEFAULT '',
+            priority        TEXT NOT NULL DEFAULT 'normal',
+            next_action     TEXT NOT NULL DEFAULT '',
+            notes           TEXT NOT NULL DEFAULT '',
+            hypothesis      TEXT NOT NULL DEFAULT '',
+            evidence        TEXT NOT NULL DEFAULT '',
+            decision        TEXT NOT NULL DEFAULT '',
+            lessons         TEXT NOT NULL DEFAULT '',
+            archived_at     TEXT NULL
         )"
     );
     $pdo->exec('CREATE INDEX IF NOT EXISTS idx_experiments_visibility ON experiments (visibility)');
+    $pdo->exec('CREATE INDEX IF NOT EXISTS idx_experiments_status ON experiments (status)');
 
     // Invitations apply only to existing registered users. The composite primary
     // key prevents duplicate invites. Foreign keys are enforced because db()
@@ -149,6 +163,97 @@ function init_schema(PDO $pdo): void
         )"
     );
     $pdo->exec('CREATE INDEX IF NOT EXISTS idx_experiment_invites_user ON experiment_invites (user_id)');
+
+    // Existing databases created before the idea-manager fields need a safe,
+    // idempotent ALTER TABLE pass. Never drop or recreate experiments.
+    migrate_experiments_schema($pdo);
+}
+
+/**
+ * Return the set of column names currently present on a table.
+ *
+ * @return array<string, true>
+ */
+function table_columns(PDO $pdo, string $table): array
+{
+    $columns = [];
+    $stmt = $pdo->query('PRAGMA table_info(' . $table . ')');
+    if ($stmt === false) {
+        return $columns;
+    }
+    foreach ($stmt->fetchAll() as $row) {
+        $name = (string) ($row['name'] ?? '');
+        if ($name !== '') {
+            $columns[$name] = true;
+        }
+    }
+    return $columns;
+}
+
+/**
+ * Add missing idea-manager columns and normalize legacy statuses.
+ * Safe to run repeatedly. Never exposes raw SQL errors to users.
+ */
+function migrate_experiments_schema(PDO $pdo): void
+{
+    try {
+        $columns = table_columns($pdo, 'experiments');
+        if ($columns === []) {
+            return;
+        }
+
+        $additions = [
+            'problem'     => "TEXT NOT NULL DEFAULT ''",
+            'target_user' => "TEXT NOT NULL DEFAULT ''",
+            'priority'    => "TEXT NOT NULL DEFAULT 'normal'",
+            'next_action' => "TEXT NOT NULL DEFAULT ''",
+            'notes'       => "TEXT NOT NULL DEFAULT ''",
+            'hypothesis'  => "TEXT NOT NULL DEFAULT ''",
+            'evidence'    => "TEXT NOT NULL DEFAULT ''",
+            'decision'    => "TEXT NOT NULL DEFAULT ''",
+            'lessons'     => "TEXT NOT NULL DEFAULT ''",
+            'archived_at' => 'TEXT NULL',
+        ];
+
+        foreach ($additions as $column => $definition) {
+            if (!isset($columns[$column])) {
+                $pdo->exec('ALTER TABLE experiments ADD COLUMN ' . $column . ' ' . $definition);
+            }
+        }
+
+        // Legacy statuses from the first visibility phase. Only values that
+        // actually shipped in this repository are remapped.
+        $statusMap = [
+            'framing'        => 'inbox',
+            'self-testing'   => 'testing',
+            'invite-testing' => 'testing',
+            'public'         => 'launched',
+        ];
+        $update = $pdo->prepare('UPDATE experiments SET status = :new WHERE status = :old');
+        foreach ($statusMap as $old => $new) {
+            $update->execute([':new' => $new, ':old' => $old]);
+        }
+
+        // Ensure archived rows carry an archived_at timestamp when missing.
+        $pdo->exec(
+            "UPDATE experiments
+                SET archived_at = COALESCE(archived_at, updated_at, created_at)
+              WHERE status = 'archived' AND archived_at IS NULL"
+        );
+
+        // Clear archived_at on non-archived rows (e.g. after a restore or remap).
+        $pdo->exec(
+            "UPDATE experiments
+                SET archived_at = NULL
+              WHERE status != 'archived' AND archived_at IS NOT NULL"
+        );
+    } catch (PDOException $e) {
+        // Controlled failure only — never surface the raw SQL/PDO message.
+        saas_lab_fatal(
+            'The SaaS Lab idea workspace could not finish updating its database schema. '
+            . 'If this is a new deployment, verify PHP write permissions for the data directory.'
+        );
+    }
 }
 
 /**

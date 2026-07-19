@@ -41,6 +41,7 @@ render_page_top('Your account', 'account');
     </p>
 
     <?php if (is_admin()): ?>
+        <p><a class="btn btn--primary" href="<?= e(url('admin/experiments.php')) ?>">Open Ideas</a></p>
         <p><a class="btn btn--ghost" href="<?= e(url('admin/')) ?>">Open admin console</a></p>
     <?php endif; ?>
 
@@ -55,10 +56,9 @@ render_page_top('Your account', 'account');
     <h1 id="private-title">Private experiments</h1>
     <?php if (is_admin()): ?>
         <p class="auth-note">
-            You are an administrator. Manage every experiment and its testers in
-            the registry.
+            You are an administrator. Capture and manage SaaS ideas in the Ideas workspace.
         </p>
-        <p><a class="btn btn--ghost" href="<?= e(url('admin/experiments.php')) ?>">Open experiment registry</a></p>
+        <p><a class="btn btn--ghost" href="<?= e(url('admin/experiments.php')) ?>">Open Ideas</a></p>
     <?php else: ?>
         <?php $invited = list_user_invited_experiments((int) $user['id']); ?>
         <?php if ($invited === []): ?>
@@ -69,7 +69,7 @@ render_page_top('Your account', 'account');
                     <li class="private-list__item">
                         <div>
                             <a class="private-list__name" href="<?= e(url('x/' . rawurlencode($exp['slug']) . '.php')) ?>"><?= e($exp['name']) ?></a>
-                            <span class="tag"><?= e($exp['status']) ?></span>
+                            <span class="tag"><?= e(idea_status_label((string) $exp['status'])) ?></span>
                             <?php if ($exp['description'] !== ''): ?>
                                 <p class="private-list__desc"><?= e($exp['description']) ?></p>
                             <?php endif; ?>
