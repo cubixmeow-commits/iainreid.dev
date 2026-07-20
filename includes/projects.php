@@ -4,6 +4,16 @@ declare(strict_types=1);
 
 return [
     [
+        'slug' => 'sousmeow',
+        'title' => 'SousMeow',
+        'eyebrow' => 'Workflow System',
+        'description' => 'A guided platform for building, sharing, and running complete AI workflows with the subscriptions people already use.',
+        'status' => 'Active prototype',
+        'materials' => ['PHP', 'MySQL', 'JavaScript'],
+        'mark' => 'II',
+        'url' => 'https://cubixmeow.com/iain/projects/sousmeow/public/',
+    ],
+    [
         'slug' => 'saas-lab',
         'title' => 'SaaS Lab',
         'eyebrow' => 'Current Experiment',
@@ -12,15 +22,6 @@ return [
         'materials' => ['HTML', 'CSS', 'Vanilla JavaScript'],
         'mark' => 'I',
         'url' => '/site/saas-lab/',
-    ],
-    [
-        'slug' => 'sousmeow',
-        'title' => 'SousMeow',
-        'eyebrow' => 'Workflow System',
-        'description' => 'A guided platform for building, sharing, and running complete AI workflows with the subscriptions people already use.',
-        'status' => 'Active prototype',
-        'materials' => ['PHP', 'MySQL', 'JavaScript'],
-        'mark' => 'II',
     ],
     [
         'slug' => 'arcana',
