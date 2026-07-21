@@ -20,6 +20,8 @@ $pageDescription = 'Iain Reid builds VibeKB, SousMeow, and Arcana: practical sys
 
 $links = [
     'github' => 'https://github.com/cubixmeow-commits',
+    'x' => 'https://x.com/realiainreid',
+    'x_handle' => '@realiainreid',
     'email' => 'iain@iainreid.dev',
     'mailto' => 'mailto:iain@iainreid.dev',
     'vibekb_repo' => 'https://github.com/cubixmeow-commits/VibeKB',
@@ -1957,6 +1959,9 @@ img { max-width: 100%; height: auto; display: block; }
                     <li>
                         <a href="<?= e($links['github']) ?>" rel="noopener noreferrer">GitHub profile</a>
                     </li>
+                    <li>
+                        <a href="<?= e($links['x']) ?>" rel="noopener noreferrer"><?= e($links['x_handle']) ?></a>
+                    </li>
                 </ul>
                 <p class="copy-status" id="copy-status" role="status" aria-live="polite"></p>
             </div>
@@ -1968,6 +1973,8 @@ img { max-width: 100%; height: auto; display: block; }
         <button class="showdown-link" type="button" data-showdown-open>Showdown</button>
         <span>
             <a href="<?= e($links['github']) ?>" rel="noopener noreferrer">GitHub</a>
+            ·
+            <a href="<?= e($links['x']) ?>" rel="noopener noreferrer"><?= e($links['x_handle']) ?></a>
             ·
             <a href="<?= e($links['mailto']) ?>">Email</a>
             ·
