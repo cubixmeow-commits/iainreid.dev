@@ -17,15 +17,15 @@ find ~/public_html/site -type f -exec chmod 644 {} \;
 
 The public document root is `public_html/`. The repository deploys to
 `public_html/site/`, so the site is served under `https://iainreid.dev/site/`
-(for example the SaaS Lab page is `https://iainreid.dev/site/saas-lab/`). The
+(for example the VibeKB page is `https://iainreid.dev/site/saas-lab/`). The
 shared account system lives under the same base path (`/site/auth/...`,
 `/site/admin/`). This base path is configured in one place: `includes/config.php`.
 
-## Shared account system (SaaS Lab)
+## Shared account system (VibeKB)
 
 The Git deployment now also copies `auth/`, `admin/`, `data/`, and `scripts/`,
 and removes the stale static `saas-lab/index.html` (that page is now served by
-`saas-lab/index.php`). See `docs/AUTH.md` for the full account-system guide.
+`saas-lab/index.php` as the VibeKB portfolio page). See `docs/AUTH.md` for the full account-system guide.
 
 ### Database directory must be writable
 

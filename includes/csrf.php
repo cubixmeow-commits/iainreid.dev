@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Small CSRF helper shared across the SaaS Lab forms (registration, login,
+ * Small CSRF helper shared across the VibeKB forms (registration, login,
  * logout). A single cryptographically random token is stored in the session,
  * rendered into forms, and compared with hash_equals() on submission.
  */

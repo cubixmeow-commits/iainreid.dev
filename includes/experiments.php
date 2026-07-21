@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Private-first experiment visibility and SaaS idea helpers for SaaS Lab.
+ * Private-first experiment visibility and idea helpers for VibeKB.
  *
  * An experiment can be deployed to production before it is publicly
  * discoverable: used privately, then by a few invited testers, then published
@@ -169,7 +169,7 @@ function list_public_experiments(): array
 }
 
 /**
- * Count of public, non-archived ideas — safe for the public SaaS Lab page.
+ * Count of public, non-archived ideas — safe for the public VibeKB page.
  */
 function count_public_ideas(): int
 {
@@ -610,7 +610,7 @@ function render_not_found(): never
 {
     if (headers_sent($file, $line)) {
         error_log(sprintf(
-            'SaaS Lab experiment gate: output already started at %s:%d — cannot send 404. '
+            'VibeKB experiment gate: output already started at %s:%d — cannot send 404. '
             . 'The gated page must call require_experiment_access() before any output.',
             $file,
             (int) $line
@@ -632,7 +632,7 @@ function render_not_found(): never
             . '<p class="mono">404</p>'
             . '<h1 id="nf-title">Page not found</h1>'
             . '<p class="auth-lede">The page you were looking for does not exist.</p>'
-            . '<p><a class="btn btn--ghost" href="' . e(url('saas-lab/')) . '">Back to SaaS Lab</a></p>'
+            . '<p><a class="btn btn--ghost" href="' . e(url('saas-lab/')) . '">Back to VibeKB</a></p>'
             . '</section>';
         render_page_bottom();
     } else {

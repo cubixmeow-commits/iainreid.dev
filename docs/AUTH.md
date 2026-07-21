@@ -1,26 +1,27 @@
-# SaaS Lab — Shared Account System
+# VibeKB — Shared Account System
 
 ## Architecture, briefly
 
-SaaS Lab is a collection of small software experiments. Rather than give each
+VibeKB is the featured portfolio project, and the workshop also runs smaller
+experiments behind a shared gate. Rather than give each
 experiment its own login, this is a **single shared account layer** that every
-future SaaS Lab project can adopt by including one file. One identity, one
-session, one user table — so a person who signs up once is known across the lab.
+future project can adopt by including one file. One identity, one
+session, one user table — so a person who signs up once is known across the workshop.
 
 Design choices, and why:
 
-- **SQLite** is right for this first deployment: the lab has very low
+- **SQLite** is right for this first deployment: the workshop has very low
   concurrency, the database is a single file that lives with the app, there is
   no separate database server to provision on shared hosting, and backups are a
   file copy. It scales far enough for a foundation and can be migrated later if
-  an experiment ever outgrows it.
+  a project ever outgrows it.
 - **PDO + native PHP sessions**: PDO gives prepared statements (no string-built
   SQL) and a clean path to another driver later; PHP's own session handling is
   battle-tested and needs nothing installed.
 - **A small hand-built auth layer, not a framework**: the whole system is a
   handful of readable files with no Composer packages, no MVC, no build step.
   That keeps it deployable on plain cPanel shared hosting and easy to audit — the
-  point of the lab is understandable experiments, not an identity platform.
+  point of the workshop is understandable software, not an identity platform.
 - **Deployable on shared cPanel hosting**: no daemons, no queues, no external
   services. Git-deploy the files, ensure one directory is writable, done.
 
@@ -102,7 +103,7 @@ never recreate or damage existing data. `init_schema()` is deliberately small so
 it can grow into versioned migrations later without adding a framework now.
 
 Journaling uses SQLite's default rollback-journal mode (not WAL), which suits
-the lab's very low concurrency and avoids `-wal`/`-shm` files that could
+the workshop's very low concurrency and avoids `-wal`/`-shm` files that could
 complicate backups and deployment. `PRAGMA foreign_keys = ON` is set ahead of
 future related tables (a no-op for the single table today).
 
@@ -134,7 +135,7 @@ If it is not writable, the code stops with a controlled, operator-facing message
 that names the absolute directory (and nothing else):
 
 ```
-The SaaS Lab data directory is not writable. Verify PHP write permissions for: /home/iainmcok/public_html/site/data
+The VibeKB data directory is not writable. Verify PHP write permissions for: /home/iainmcok/public_html/site/data
 ```
 
 ## cPanel permissions & ownership
@@ -187,7 +188,7 @@ Use the normalized (lowercase, trimmed) email.
 
 The protective `data/.htaccess` and `data/index.php` **are** committed.
 
-## How future SaaS Lab projects require authentication
+## How future projects require authentication
 
 Include the shared bootstrap, then use the helpers:
 

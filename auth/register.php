@@ -82,9 +82,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 render_page_top('Create account');
 ?>
 <section class="auth-card" aria-labelledby="register-title">
-    <p class="mono">Lab Access · New account</p>
-    <h1 id="register-title">Create your SaaS Lab account</h1>
-    <p class="auth-lede">One account for the SaaS Lab experiments. Enter your details to get started.</p>
+    <p class="mono">Account Access · New account</p>
+    <h1 id="register-title">Create your VibeKB account</h1>
+    <p class="auth-lede">One account for VibeKB and related workshop tools. Enter your details to get started.</p>
 
     <?php render_error_summary(array_values($errors)); ?>
 

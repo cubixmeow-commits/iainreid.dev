@@ -3,10 +3,10 @@
 declare(strict_types=1);
 
 /**
- * Shared authentication and URL helpers for the SaaS Lab account system.
+ * Shared authentication and URL helpers for the VibeKB account system.
  *
  * These functions are intentionally small and dependency-free so any future
- * SaaS Lab project can include bootstrap.php and reuse the same session,
+ * project can include bootstrap.php and reuse the same session,
  * authorization, and URL behaviour. Nothing here builds SQL from user input;
  * database access goes through prepared statements in database.php.
  */

@@ -1,4 +1,4 @@
-# Protect the SaaS Lab data directory from direct web access.
+# Protect the VibeKB data directory from direct web access.
 # The SQLite database and any journal/lock files live here and must never be
 # served over HTTP. Deployed to public_html/site/data/ (served under /site/data/).
 

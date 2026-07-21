@@ -85,9 +85,9 @@ render_page_top('Ideas', 'ideas');
 <section class="auth-card auth-card--wide ideas-dash" aria-labelledby="ideas-title">
     <header class="ideas-dash__header">
         <div>
-            <p class="mono">SaaS Lab · Idea manager</p>
+            <p class="mono">VibeKB · Idea manager</p>
             <h1 id="ideas-title">Ideas</h1>
-            <p class="auth-lede">Capture, organize, and move SaaS ideas forward.</p>
+            <p class="auth-lede">Capture, organize, and move product ideas forward.</p>
         </div>
         <a class="btn btn--primary" href="#new-idea">New idea</a>
     </header>

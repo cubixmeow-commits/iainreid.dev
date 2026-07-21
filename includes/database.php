@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * SQLite database access for the shared SaaS Lab account system.
+ * SQLite database access for the shared VibeKB account system.
  *
  * Uses PDO with the pdo_sqlite extension. The database file and its table are
  * created automatically on first use. All queries elsewhere use prepared
@@ -25,7 +25,7 @@ function db(): PDO
 
     if (!extension_loaded('pdo_sqlite')) {
         saas_lab_fatal(
-            'The SaaS Lab account system requires the PDO SQLite PHP extension '
+            'The VibeKB account system requires the PDO SQLite PHP extension '
             . '(pdo_sqlite), which is not enabled. Enable it in cPanel under '
             . '"Select PHP Version" (Extensions) or "MultiPHP INI Editor", then reload.'
         );
@@ -55,7 +55,7 @@ function db(): PDO
         // Never surface the raw PDO message. The most common real-world cause
         // on a fresh deployment is a directory PHP cannot write to.
         saas_lab_fatal(
-            'The SaaS Lab account system could not open its database. '
+            'The VibeKB account system could not open its database. '
             . 'If this is a new deployment, verify PHP write permissions for: '
             . $dataDir
         );
@@ -79,7 +79,7 @@ function ensure_data_dir_writable(string $dataDir): void
 
     if (!is_dir($dataDir) || !is_writable($dataDir)) {
         saas_lab_fatal(
-            'The SaaS Lab data directory is not writable. '
+            'The VibeKB data directory is not writable. '
             . 'Verify PHP write permissions for: ' . $dataDir
         );
     }
@@ -250,7 +250,7 @@ function migrate_experiments_schema(PDO $pdo): void
     } catch (PDOException $e) {
         // Controlled failure only — never surface the raw SQL/PDO message.
         saas_lab_fatal(
-            'The SaaS Lab idea workspace could not finish updating its database schema. '
+            'The VibeKB idea workspace could not finish updating its database schema. '
             . 'If this is a new deployment, verify PHP write permissions for the data directory.'
         );
     }
@@ -290,12 +290,12 @@ function saas_lab_fatal(string $message, int $status = 500): never
     $safe = htmlspecialchars($message, ENT_QUOTES, 'UTF-8');
     echo '<!doctype html><html lang="en"><head><meta charset="utf-8">'
         . '<meta name="viewport" content="width=device-width, initial-scale=1">'
-        . '<title>SaaS Lab</title></head>'
+        . '<title>VibeKB</title></head>'
         . '<body style="margin:0;min-height:100vh;display:flex;align-items:center;'
         . 'justify-content:center;background:#0d0c0a;color:#efe7d2;'
         . "font-family:system-ui,-apple-system,'Segoe UI',sans-serif;padding:2rem;\">"
         . '<div style="max-width:34rem;">'
-        . '<h1 style="font-size:1.15rem;letter-spacing:.02em;margin:0 0 .75rem;">SaaS Lab</h1>'
+        . '<h1 style="font-size:1.15rem;letter-spacing:.02em;margin:0 0 .75rem;">VibeKB</h1>'
         . '<p style="line-height:1.6;margin:0;color:#d8c79e;">' . $safe . '</p>'
         . '</div></body></html>';
     exit;

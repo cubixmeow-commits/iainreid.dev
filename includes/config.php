@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 /**
- * Shared SaaS Lab configuration.
+ * Shared VibeKB configuration.
  *
  * This is the single place where deployment-specific values live. Nothing
  * else in the codebase should hardcode a domain, a base path, or the /site/
- * prefix. Future SaaS Lab projects read the same values through the helpers
+ * prefix. Future projects read the same values through the helpers
  * in auth.php (base_url(), url(), app_path()).
  *
  * Deployment mapping (confirmed by inspection):

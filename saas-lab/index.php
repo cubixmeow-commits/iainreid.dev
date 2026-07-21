@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// Shared SaaS Lab account system: gives this page an auth-state-aware account
+// Shared account system: gives this page an auth-state-aware account
 // entry point. The bootstrap starts the session and wires the helpers.
 // Public idea counts come from the database; private/invite ideas never appear.
 require __DIR__ . '/../includes/bootstrap.php';
@@ -15,14 +15,14 @@ $publicIdeaCountLabel = str_pad((string) $publicIdeaCount, 2, '0', STR_PAD_LEFT)
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="SaaS Lab is Iain Reid's system for testing software ideas before overbuilding them. Focused, deployable experiments that let evidence decide what earns more time.">
+    <meta name="description" content="VibeKB is a repository understanding platform for AI-assisted development. It transforms repositories into living understanding sites so developers can explore architecture, features, and relationships with confidence.">
     <meta name="theme-color" content="#0d0c0a">
-    <meta property="og:title" content="SaaS Lab · Iain Reid">
-    <meta property="og:description" content="A system for testing software ideas before overbuilding them.">
+    <meta property="og:title" content="VibeKB · Iain Reid">
+    <meta property="og:description" content="Repository understanding for AI-assisted development. Understand your software before you change it.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://iainreid.dev/site/saas-lab/">
     <meta name="twitter:card" content="summary">
-    <title>SaaS Lab · Experiment Ledger · Iain Reid</title>
+    <title>VibeKB · Repository Understanding · Iain Reid</title>
     <link rel="canonical" href="https://iainreid.dev/site/saas-lab/">
     <link rel="stylesheet" href="../assets/css/style.css?v=20260719g">
     <link rel="stylesheet" href="../assets/css/saas-lab.css?v=20260719a">
@@ -51,11 +51,11 @@ $publicIdeaCountLabel = str_pad((string) $publicIdeaCount, 2, '0', STR_PAD_LEFT)
         </button>
         <nav id="site-nav" aria-label="Primary navigation">
             <a href="/site/">Workshop</a>
-            <a href="/site/saas-lab/" aria-current="page">SaaS Lab</a>
-            <a href="#experiments">Experiments</a>
+            <a href="/site/saas-lab/" aria-current="page">VibeKB</a>
+            <a href="#experiments">Capabilities</a>
             <a href="#method">Method</a>
             <a href="#principles">Principles</a>
-            <span class="lab-account-nav" role="group" aria-label="Lab access">
+            <span class="lab-account-nav" role="group" aria-label="Account access">
                 <?php if (is_logged_in()): ?>
                     <?php if (is_admin()): ?>
                         <a class="btn btn--ghost" href="<?= e(url('admin/experiments.php')) ?>">Ideas</a>
@@ -74,45 +74,45 @@ $publicIdeaCountLabel = str_pad((string) $publicIdeaCount, 2, '0', STR_PAD_LEFT)
         <!-- Hero -->
         <section class="lab-hero" id="top" aria-labelledby="lab-title">
             <div class="lab-hero__intro" data-reveal>
-                <p class="mono">Field ledger · Experiments</p>
-                <h1 id="lab-title">SaaS Lab</h1>
-                <p class="lab-hero__lede">A system for testing software ideas before overbuilding them.</p>
-                <p class="lab-hero__copy">I build focused, deployable experiments. Each one exists to learn whether an idea deserves more time and complexity, using the smallest version that can answer the question in real conditions.</p>
+                <p class="mono">Field ledger · Featured project</p>
+                <h1 id="lab-title">VibeKB</h1>
+                <p class="lab-hero__lede">Understand your AI-built software.</p>
+                <p class="lab-hero__copy">Modern AI coding tools help us build software faster than ever. Understanding it hasn’t kept up. VibeKB transforms repositories into living understanding sites that help developers regain confidence, understand architecture, explore functionality, and safely continue development.</p>
                 <div class="lab-hero__meta">
+                    <span><b>Focus</b> repository understanding</span>
+                    <span><b>Built for</b> AI-assisted workflows</span>
                     <span><b>Public ideas</b> <?= e($publicIdeaCountLabel) ?></span>
-                    <span><b>Method</b> problem to evidence</span>
-                    <span><b>Bench</b> shared Linux hosting</span>
                 </div>
             </div>
 
-            <aside class="board" data-reveal aria-label="Active experiment index">
+            <aside class="board" data-reveal aria-label="Capability index">
                 <div class="board__head">
                     <span class="board__title">Active bench</span>
                     <span class="board__count">03</span>
                 </div>
                 <ul class="board__rows">
                     <li class="board__row">
-                        <span class="board__id">EXP-01</span>
-                        <a class="board__name" href="#exp-sousmeow">SousMeow</a>
-                        <span class="signal signal--active">Active prototype</span>
+                        <span class="board__id">CAP-01</span>
+                        <a class="board__name" href="#exp-understand">Understanding</a>
+                        <span class="signal signal--active">Core</span>
                     </li>
                     <li class="board__row">
-                        <span class="board__id">EXP-02</span>
-                        <a class="board__name" href="#exp-arcana">Arcana</a>
-                        <span class="signal signal--working">Working system</span>
+                        <span class="board__id">CAP-02</span>
+                        <a class="board__name" href="#exp-explore">Exploration</a>
+                        <span class="signal signal--working">Core</span>
                     </li>
                     <li class="board__row">
-                        <span class="board__id">EXP-03</span>
-                        <a class="board__name" href="#exp-storyforge">StoryForge</a>
-                        <span class="signal signal--dev">In development</span>
+                        <span class="board__id">CAP-03</span>
+                        <a class="board__name" href="#exp-architecture">Architecture</a>
+                        <span class="signal signal--dev">Core</span>
                     </li>
                 </ul>
-                <div class="board__pipe" aria-label="Experiment pipeline">
-                    <span>problem</span><i>→</i>
-                    <span>loop</span><i>→</i>
-                    <span>deploy</span><i>→</i>
-                    <span>observe</span><i>→</i>
-                    <span>decide</span>
+                <div class="board__pipe" aria-label="Understanding pipeline">
+                    <span>analyze</span><i>→</i>
+                    <span>structure</span><i>→</i>
+                    <span>explain</span><i>→</i>
+                    <span>explore</span><i>→</i>
+                    <span>continue</span>
                 </div>
             </aside>
         </section>
@@ -121,81 +121,81 @@ $publicIdeaCountLabel = str_pad((string) $publicIdeaCount, 2, '0', STR_PAD_LEFT)
         <section class="section lab-section" id="about" aria-labelledby="about-heading">
             <div class="section-heading" data-reveal>
                 <span class="mono">01 · Premise</span>
-                <h2 id="about-heading">Evidence before ambition</h2>
-                <p class="eyebrow-note">Most ideas are abandoned or overbuilt for the same reason. Nobody puts them in front of reality early enough to learn what they actually need.</p>
+                <h2 id="about-heading">Understanding before modification</h2>
+                <p class="eyebrow-note">AI coding tools let people build large applications quickly. After a few days or weeks, many struggle to answer basic questions about their own software.</p>
             </div>
             <div class="instruments" data-reveal>
-                <p><span class="accent">SaaS Lab is a workbench for turning a software idea into something real enough to test.</span> The rule is simple. Finish one complete product loop, put it into real use, then let behaviour decide whether the idea earns more scope. An experiment that ends early is not a failure. It is a question answered cheaply.</p>
+                <p><span class="accent">VibeKB is a repository understanding platform designed for the age of AI-assisted software development.</span> Instead of forcing developers to rediscover their own architecture, it helps them regain understanding and confidence—so they can see how the application works, where to make changes, and what could break if they do.</p>
                 <div class="inv-grid">
                     <div class="inv-group">
                         <h3>What it is</h3>
                         <ul>
-                            <li>A testing method</li>
-                            <li>A record of decisions</li>
-                            <li>A place to start ideas</li>
+                            <li>Repository understanding</li>
+                            <li>Human-first explanation</li>
+                            <li>Living project knowledge</li>
                         </ul>
                     </div>
                     <div class="inv-group">
                         <h3>What it is not</h3>
                         <ul>
-                            <li>A startup pitch</li>
-                            <li>A demo reel</li>
-                            <li>A promise to ship</li>
+                            <li>A code generator</li>
+                            <li>A marketing pitch</li>
+                            <li>A throwaway summary</li>
                         </ul>
                     </div>
                     <div class="inv-group">
-                        <h3>Each experiment asks</h3>
+                        <h3>It helps answer</h3>
                         <ul>
-                            <li>Is the problem real</li>
-                            <li>Does the loop hold</li>
-                            <li>Is more complexity earned</li>
+                            <li>How does this work</li>
+                            <li>Where should I change</li>
+                            <li>What depends on this</li>
                         </ul>
                     </div>
                     <div class="inv-group">
-                        <h3>Outcomes</h3>
+                        <h3>Built for</h3>
                         <ul>
-                            <li>Continue or simplify</li>
-                            <li>Pivot the question</li>
-                            <li>Archive with lessons</li>
+                            <li>Solo developers</li>
+                            <li>AI-assisted workflows</li>
+                            <li>Returning to a codebase</li>
                         </ul>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Active experiments -->
+        <!-- Capabilities -->
         <section class="section lab-section" id="experiments" aria-labelledby="experiments-heading">
             <div class="section-heading" data-reveal>
                 <span class="mono">02 · On the bench</span>
-                <h2 id="experiments-heading">Three experiments in progress</h2>
-                <p class="eyebrow-note">Each product is treated as a live experiment with a hypothesis, a working loop, and a decision waiting on evidence.</p>
+                <h2 id="experiments-heading">Three capabilities in focus</h2>
+                <p class="eyebrow-note">Each capability exists to make software comprehension concrete: what the system does, how features relate, and where architecture lives in the files.</p>
             </div>
 
             <div class="experiments">
-                <!-- EXP-01 SousMeow -->
-                <article class="experiment" id="exp-sousmeow" data-reveal aria-labelledby="exp1-name">
+                <!-- CAP-01 Understanding -->
+                <article class="experiment" id="exp-understand" data-reveal aria-labelledby="exp1-name">
                     <div class="experiment__head">
                         <span class="experiment__ghost" aria-hidden="true">01</span>
-                        <span class="experiment__id">EXP-01</span>
-                        <h3 class="experiment__name" id="exp1-name">SousMeow</h3>
-                        <span class="signal signal--active">Active prototype</span>
+                        <span class="experiment__id">CAP-01</span>
+                        <h3 class="experiment__name" id="exp1-name">Human-first understanding</h3>
+                        <span class="signal signal--active">Core</span>
                     </div>
                     <div class="experiment__body">
                         <div class="experiment__narrative">
                             <div class="experiment__hypothesis">
                                 <span class="field-label">Hypothesis</span>
-                                <blockquote>People will run multi-step AI work when it uses the subscriptions they already pay for, with no API keys and no per-token billing.</blockquote>
+                                <blockquote>Developers regain confidence faster when a repository is explained in clear, structured, human-friendly language—not buried in raw file trees.</blockquote>
                             </div>
                             <div class="experiment__block">
-                                <span class="field-label">Problem being tested</span>
-                                <p>Prompts get shared as isolated snippets. A complete process, like research then draft then refine, rarely survives being copied between people. The steps and the order are the part that gets lost.</p>
+                                <span class="field-label">Problem being addressed</span>
+                                <p>After building with AI, people often cannot answer how their application actually works. The code exists. The understanding does not. Returning after time away makes the gap worse.</p>
                             </div>
                             <div class="experiment__block">
                                 <span class="field-label">Working product loop</span>
                                 <div class="loop">
-                                    <span>Record a process as a Cookbook</span><i>→</i>
-                                    <span>Run it on your own AI subscription</span><i>→</i>
-                                    <span>Each step feeds the next</span>
+                                    <span>Connect a repository</span><i>→</i>
+                                    <span>Analyze with AI assistance</span><i>→</i>
+                                    <span>Read a living understanding site</span>
                                 </div>
                             </div>
                         </div>
@@ -203,50 +203,49 @@ $publicIdeaCountLabel = str_pad((string) $publicIdeaCount, 2, '0', STR_PAD_LEFT)
                             <dl>
                                 <div>
                                     <dt>Evidence watched</dt>
-                                    <dd class="muted">Whether people finish a whole Cookbook instead of stopping after the first step, and whether authors return to publish a second.</dd>
+                                    <dd class="muted">Whether developers can explain their own system after time away, and whether they feel ready to modify it without rediscovering everything from scratch.</dd>
                                 </div>
                                 <div>
                                     <dt>Technology</dt>
-                                    <dd class="tech"><span>PHP</span><span>MySQL</span><span>JavaScript</span></dd>
+                                    <dd class="tech"><span>PHP</span><span>AI analysis</span><span>JavaScript</span></dd>
                                 </div>
                                 <div>
                                     <dt>Decision gate</dt>
-                                    <dd>Do runs complete end to end, and do authors package processes they already do by hand?</dd>
+                                    <dd>Does the understanding site restore functional comprehension faster than reading the repository alone?</dd>
                                 </div>
                                 <div>
                                     <dt>Next experiment</dt>
-                                    <dd class="muted">Share a Cookbook by link and run it with no setup.</dd>
+                                    <dd class="muted">Keep explanations current as the repository changes.</dd>
                                 </div>
                             </dl>
                         </div>
                     </div>
                 </article>
 
-                <!-- EXP-02 Arcana -->
-                <article class="experiment" id="exp-arcana" data-reveal aria-labelledby="exp2-name">
+                <!-- CAP-02 Exploration -->
+                <article class="experiment" id="exp-explore" data-reveal aria-labelledby="exp2-name">
                     <div class="experiment__head">
                         <span class="experiment__ghost" aria-hidden="true">02</span>
-                        <span class="experiment__id">EXP-02</span>
-                        <h3 class="experiment__name" id="exp2-name">Arcana</h3>
-                        <span class="signal signal--working">Working system</span>
+                        <span class="experiment__id">CAP-02</span>
+                        <h3 class="experiment__name" id="exp2-name">Feature-oriented exploration</h3>
+                        <span class="signal signal--working">Core</span>
                     </div>
                     <div class="experiment__body">
                         <div class="experiment__narrative">
                             <div class="experiment__hypothesis">
                                 <span class="field-label">Hypothesis</span>
-                                <blockquote>A song carries enough structure, in its themes, mood, symbols, and imagery, to drive a finished piece of art without the listener writing a prompt.</blockquote>
+                                <blockquote>Developers find the right place to work when they can explore software by feature and functionality, not only by folder and filename.</blockquote>
                             </div>
                             <div class="experiment__block">
-                                <span class="field-label">Problem being tested</span>
-                                <p>Image tools expect prompt engineering. Most people can describe how a song feels but not how to phrase that for a generator. The gap sits between feeling and instruction.</p>
+                                <span class="field-label">Problem being addressed</span>
+                                <p>AI-generated repositories grow quickly. Files implement functionality, but the map from “what I want to change” to “which files matter” is often missing. Relationships between features stay opaque.</p>
                             </div>
                             <div class="experiment__block">
                                 <span class="field-label">Working product loop</span>
                                 <div class="loop">
-                                    <span>Choose a song</span><i>→</i>
-                                    <span>Read its themes and mood</span><i>→</i>
-                                    <span>Compose a visual brief</span><i>→</i>
-                                    <span>Generate one finished piece</span>
+                                    <span>Browse by feature</span><i>→</i>
+                                    <span>See related functionality</span><i>→</i>
+                                    <span>Open the implementing files</span>
                                 </div>
                             </div>
                         </div>
@@ -254,50 +253,49 @@ $publicIdeaCountLabel = str_pad((string) $publicIdeaCount, 2, '0', STR_PAD_LEFT)
                             <dl>
                                 <div>
                                     <dt>Evidence watched</dt>
-                                    <dd class="muted">Whether the result feels like the song to the person who chose it, and whether one generation is enough or people reach to regenerate.</dd>
+                                    <dd class="muted">Whether people can locate the files behind a feature without hunting through the tree, and whether feature relationships reduce accidental breakage.</dd>
                                 </div>
                                 <div>
                                     <dt>Technology</dt>
-                                    <dd class="tech"><span>PHP</span><span>Gemini</span><span>Imagick</span></dd>
+                                    <dd class="tech"><span>PHP</span><span>AI analysis</span><span>Structured views</span></dd>
                                 </div>
                                 <div>
                                     <dt>Decision gate</dt>
-                                    <dd>Does song analysis produce art people keep without editing the prompt themselves?</dd>
+                                    <dd>Can a developer answer “what files implement this?” and “what depends on this?” from the understanding site?</dd>
                                 </div>
                                 <div>
                                     <dt>Next experiment</dt>
-                                    <dd class="muted">Drive a short visual sequence from the same analysis, not a single frame.</dd>
+                                    <dd class="muted">Surface clear relationships between features as the primary navigation path.</dd>
                                 </div>
                             </dl>
                         </div>
                     </div>
                 </article>
 
-                <!-- EXP-03 StoryForge -->
-                <article class="experiment" id="exp-storyforge" data-reveal aria-labelledby="exp3-name">
+                <!-- CAP-03 Architecture -->
+                <article class="experiment" id="exp-architecture" data-reveal aria-labelledby="exp3-name">
                     <div class="experiment__head">
                         <span class="experiment__ghost" aria-hidden="true">03</span>
-                        <span class="experiment__id">EXP-03</span>
-                        <h3 class="experiment__name" id="exp3-name">StoryForge</h3>
-                        <span class="signal signal--dev">In development</span>
+                        <span class="experiment__id">CAP-03</span>
+                        <h3 class="experiment__name" id="exp3-name">Functional architecture mapping</h3>
+                        <span class="signal signal--dev">Core</span>
                     </div>
                     <div class="experiment__body">
                         <div class="experiment__narrative">
                             <div class="experiment__hypothesis">
                                 <span class="field-label">Hypothesis</span>
-                                <blockquote>Fiction is easier to finish when the messy front of the work, the research and structure, is made explicit before any drafting begins.</blockquote>
+                                <blockquote>Architecture clarity comes from mapping how the system behaves—not from generating more text about the code.</blockquote>
                             </div>
                             <div class="experiment__block">
-                                <span class="field-label">Problem being tested</span>
-                                <p>Writers stall between idea and manuscript. The connective tissue, the reader promise, the outline, the character and world bibles, usually lives in someone's head and breaks under the weight of a full draft.</p>
+                                <span class="field-label">Problem being addressed</span>
+                                <p>People can ship software they no longer understand. Without a functional map, every change feels risky. The question is not “what did the AI write?” but “how does this application hold together?”</p>
                             </div>
                             <div class="experiment__block">
                                 <span class="field-label">Working product loop</span>
                                 <div class="loop">
-                                    <span>Market intelligence and Story DNA</span><i>→</i>
-                                    <span>Reader promise and outline</span><i>→</i>
-                                    <span>Character and world bibles</span><i>→</i>
-                                    <span>Chapters and export</span>
+                                    <span>Map functional structure</span><i>→</i>
+                                    <span>Clarify module roles</span><i>→</i>
+                                    <span>Assess change impact</span>
                                 </div>
                             </div>
                         </div>
@@ -305,19 +303,19 @@ $publicIdeaCountLabel = str_pad((string) $publicIdeaCount, 2, '0', STR_PAD_LEFT)
                             <dl>
                                 <div>
                                     <dt>Evidence watched</dt>
-                                    <dd class="muted">Whether writers reach a finished chapter, and whether front-loaded structure reduces rewrites mid draft.</dd>
+                                    <dd class="muted">Whether architecture views help people predict what could break, and whether they continue development with less hesitation after time away.</dd>
                                 </div>
                                 <div>
                                     <dt>Technology</dt>
-                                    <dd class="tech"><span>PHP</span><span>Markdown</span><span>AI workflows</span></dd>
+                                    <dd class="tech"><span>PHP</span><span>AI analysis</span><span>Architecture views</span></dd>
                                 </div>
                                 <div>
                                     <dt>Decision gate</dt>
-                                    <dd>Does structure defined up front carry a writer from premise to exported chapters?</dd>
+                                    <dd>Does functional architecture mapping make safe continuation of AI-assisted projects feel possible again?</dd>
                                 </div>
                                 <div>
                                     <dt>Next experiment</dt>
-                                    <dd class="muted">Export into the formats readers actually use.</dd>
+                                    <dd class="muted">Keep the architecture map living as the repository evolves.</dd>
                                 </div>
                             </dl>
                         </div>
@@ -330,55 +328,55 @@ $publicIdeaCountLabel = str_pad((string) $publicIdeaCount, 2, '0', STR_PAD_LEFT)
         <section class="section lab-section" id="method" aria-labelledby="method-heading">
             <div class="section-heading" data-reveal>
                 <span class="mono">03 · Operating method</span>
-                <h2 id="method-heading">From problem to decision</h2>
-                <p class="eyebrow-note">Every experiment follows the same path. Launch is one possible outcome at the gate, not the goal of the process.</p>
+                <h2 id="method-heading">From repository to understanding</h2>
+                <p class="eyebrow-note">The path is deliberate. Analysis is only useful when it becomes something a developer can read, explore, and trust before making changes.</p>
             </div>
             <div class="pipeline" data-reveal>
                 <div class="pipe-step">
                     <div class="pipe-step__num">01</div>
                     <div class="pipe-step__body">
-                        <h3>Identify a real problem</h3>
-                        <p>Start from friction that already exists for real people, not from a feature that would be interesting to build.</p>
+                        <h3>Start from a real repository</h3>
+                        <p>Begin with software that already exists—especially systems built quickly with AI assistance, where understanding has not kept pace with construction.</p>
                     </div>
                 </div>
                 <div class="pipe-step">
                     <div class="pipe-step__num">02</div>
                     <div class="pipe-step__body">
-                        <h3>Define the smallest complete loop</h3>
-                        <p>Find the shortest path where a person gives input and gets a useful result. Complete matters more than large.</p>
+                        <h3>Analyze with AI assistance</h3>
+                        <p>Use AI to inspect structure, features, and relationships at a scale that would be slow to do by hand—then shape the result for human reading.</p>
                     </div>
                 </div>
                 <div class="pipe-step">
                     <div class="pipe-step__num">03</div>
                     <div class="pipe-step__body">
-                        <h3>Build a deployable experiment</h3>
-                        <p>Ship something that runs under real hosting conditions. A prototype that cannot be used teaches very little.</p>
+                        <h3>Build a living understanding site</h3>
+                        <p>Produce a clear, structured site that explains how the software works. The point is software comprehension, not generating more text for its own sake.</p>
                     </div>
                 </div>
                 <div class="pipe-step">
                     <div class="pipe-step__num">04</div>
                     <div class="pipe-step__body">
-                        <h3>Put it into real use</h3>
-                        <p>Hand it to real people with real intent. Opinions are useful. Behaviour is the evidence that counts.</p>
+                        <h3>Explore by feature and function</h3>
+                        <p>Let developers navigate through functionality, architecture, and relationships so they can find where to work without rediscovering the whole tree.</p>
                     </div>
                 </div>
                 <div class="pipe-step">
                     <div class="pipe-step__num">05</div>
                     <div class="pipe-step__body">
-                        <h3>Observe friction and behaviour</h3>
-                        <p>Watch where people stop, repeat, or work around the design. The friction points are the honest feedback.</p>
+                        <h3>Understand before you change</h3>
+                        <p>Use the map to answer practical questions: what implements this, what depends on it, and what could break if you modify it.</p>
                     </div>
                 </div>
                 <div class="pipe-step pipe-step--gate">
                     <div class="pipe-step__num"><span>◆</span></div>
                     <div class="pipe-step__body">
-                        <h3>Decide at the gate</h3>
-                        <p>Read the evidence and choose the next move. Each choice is a valid result, including a clean ending.</p>
+                        <h3>Continue with confidence</h3>
+                        <p>Return to development knowing how the application holds together. Understanding is the gate; modification comes after.</p>
                         <div class="gate-outcomes">
-                            <span>Continue</span>
-                            <span>Pivot</span>
-                            <span>Simplify</span>
-                            <span>Archive</span>
+                            <span>Explore</span>
+                            <span>Clarify</span>
+                            <span>Modify</span>
+                            <span>Maintain</span>
                         </div>
                     </div>
                 </div>
@@ -394,27 +392,27 @@ $publicIdeaCountLabel = str_pad((string) $publicIdeaCount, 2, '0', STR_PAD_LEFT)
             <ol class="tenets" data-reveal>
                 <li class="tenet">
                     <span class="tenet__num">P1</span>
-                    <p>Finish the complete loop before expanding scope.</p>
+                    <p>Understanding before modification.</p>
                 </li>
                 <li class="tenet">
                     <span class="tenet__num">P2</span>
-                    <p>Simple infrastructure is often an advantage.</p>
+                    <p>Explain software for humans first.</p>
                 </li>
                 <li class="tenet">
                     <span class="tenet__num">P3</span>
-                    <p>Let evidence justify complexity.</p>
+                    <p>Explore by feature and function, not only by file.</p>
                 </li>
                 <li class="tenet">
                     <span class="tenet__num">P4</span>
-                    <p>Build for real deployment conditions.</p>
+                    <p>Keep project knowledge living as the code changes.</p>
                 </li>
                 <li class="tenet">
                     <span class="tenet__num">P5</span>
-                    <p>Archive experiments without treating them as failures.</p>
+                    <p>Architecture clarity reduces fear of change.</p>
                 </li>
                 <li class="tenet">
                     <span class="tenet__num">P6</span>
-                    <p>AI speeds up execution. It does not replace product judgment.</p>
+                    <p>AI assists analysis. Human understanding remains the goal.</p>
                 </li>
             </ol>
         </section>
@@ -424,10 +422,10 @@ $publicIdeaCountLabel = str_pad((string) $publicIdeaCount, 2, '0', STR_PAD_LEFT)
             <div class="section-heading" data-reveal>
                 <span class="mono">05 · The bench</span>
                 <h2 id="stack-heading">Instruments on hand</h2>
-                <p class="eyebrow-note">The stack is deliberately small. The point is not the tools. It is being able to move from idea to deployed software quickly.</p>
+                <p class="eyebrow-note">The stack stays deliberately practical. The point is not the tools. It is turning a repository into something a developer can understand and continue.</p>
             </div>
             <div class="instruments" data-reveal>
-                <p><span class="accent">Modest, well understood tools remove the distance between an idea and something running.</span> Shared hosting keeps each experiment honest about real deployment conditions from the first day.</p>
+                <p><span class="accent">Modest, well understood tools keep the distance short between analysis and a usable understanding site.</span> Shared hosting and familiar runtimes keep each iteration honest about real deployment conditions.</p>
                 <div class="inv-grid">
                     <div class="inv-group">
                         <h3>Runtime</h3>
@@ -473,8 +471,8 @@ $publicIdeaCountLabel = str_pad((string) $publicIdeaCount, 2, '0', STR_PAD_LEFT)
         </section>
 
         <section class="lab-close" data-reveal aria-labelledby="close-heading">
-        <h2 id="close-heading">Ideas get cheaper to judge with practice</h2>
-        <p>SaaS Lab is the method behind the products in the workshop. Every experiment leaves a record, and the record is what makes the next decision faster.</p>
+        <h2 id="close-heading">Software you built should still make sense</h2>
+        <p>VibeKB is about repository understanding for AI-assisted development. When construction outpaces comprehension, a living understanding site helps developers regain confidence and continue with clarity.</p>
         <div class="lab-close__links">
             <a href="/site/">Return to the workshop journal</a>
             <a href="mailto:iain@iainreid.dev">iain@iainreid.dev</a>
@@ -483,7 +481,7 @@ $publicIdeaCountLabel = str_pad((string) $publicIdeaCount, 2, '0', STR_PAD_LEFT)
     </main>
 
     <footer>
-        <span>iainreid.dev / saas-lab</span>
+        <span>iainreid.dev / vibekb</span>
         <span>Field ledger · <time datetime="2026">2026</time></span>
     </footer>
 

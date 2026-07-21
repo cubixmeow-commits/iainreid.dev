@@ -1,12 +1,12 @@
-# SaaS Lab — private idea workspace
+# Private idea workspace
 
 ## Purpose
 
-SaaS Lab is a private workspace for capturing and managing multiple SaaS ideas.
+The private idea workspace captures and manages multiple product ideas.
 
 Its job is to help the owner:
 
-1. Capture SaaS ideas quickly.
+1. Capture ideas quickly.
 2. Understand what each idea is.
 3. See the current stage of every idea.
 4. Record the next action.
@@ -19,7 +19,7 @@ platform, market-research tool, public directory, or validation framework.
 
 ## Core model
 
-The existing `experiments` table is the SaaS idea record. Internal code may still
+The existing `experiments` table is the idea record. Internal code may still
 use the word *experiment* where renaming would add risk. The private admin UI
 uses *idea*, *Ideas dashboard*, and *Idea workspace*.
 
@@ -28,7 +28,7 @@ Primary private surface after admin login:
 - Ideas dashboard: `/site/admin/experiments.php`
 - Idea workspace: `/site/admin/experiment.php?id=…`
 
-The public `/site/saas-lab/` page remains a portfolio/showcase page, not the
+The public `/site/saas-lab/` page is the VibeKB portfolio showcase, not the
 management interface.
 
 ## Idea lifecycle (status)

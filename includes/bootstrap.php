@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 /**
- * Shared SaaS Lab bootstrap.
+ * Shared VibeKB bootstrap.
  *
- * This is the single include future SaaS Lab projects pull in to gain the
+ * This is the single include future projects pull in to gain the
  * shared account system:
  *
  *     require __DIR__ . '/../includes/bootstrap.php';

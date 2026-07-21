@@ -4,6 +4,17 @@ declare(strict_types=1);
 
 return [
     [
+        'slug' => 'vibekb',
+        'title' => 'VibeKB',
+        'eyebrow' => 'Repository Understanding',
+        'description' => 'A repository understanding platform that turns AI-built software into a living understanding site—so developers can explore architecture, features, and relationships before they change anything.',
+        'status' => 'Active',
+        'materials' => ['PHP', 'AI analysis', 'JavaScript'],
+        'mark' => 'I',
+        'url' => '/site/saas-lab/',
+        'purpose' => 'Help developers regain confidence and functional understanding of software built with AI assistance.',
+    ],
+    [
         'slug' => 'sousmeow',
         'title' => 'SousMeow',
         'eyebrow' => 'Workflow System',
@@ -12,16 +23,7 @@ return [
         'materials' => ['PHP', 'MySQL', 'JavaScript'],
         'mark' => 'II',
         'url' => 'https://cubixmeow.com/iain/projects/sousmeow/public/',
-    ],
-    [
-        'slug' => 'saas-lab',
-        'title' => 'SaaS Lab',
-        'eyebrow' => 'Current Experiment',
-        'description' => 'A public R&D laboratory for rapidly building, testing, validating, and archiving experimental software ideas.',
-        'status' => 'Active',
-        'materials' => ['HTML', 'CSS', 'Vanilla JavaScript'],
-        'mark' => 'I',
-        'url' => '/site/saas-lab/',
+        'purpose' => 'Guide people through complete AI-powered tasks using the subscriptions they already have.',
     ],
     [
         'slug' => 'arcana',
@@ -31,6 +33,7 @@ return [
         'status' => 'Working system',
         'materials' => ['PHP', 'Gemini', 'Imagick'],
         'mark' => 'III',
+        'purpose' => 'Turn the structure of a song into a finished visual without prompt engineering.',
     ],
     [
         'slug' => 'storyforge',
@@ -40,5 +43,6 @@ return [
         'status' => 'In development',
         'materials' => ['PHP', 'Markdown', 'AI workflows'],
         'mark' => 'IV',
+        'purpose' => 'Make fiction easier to finish by making research and structure explicit before drafting.',
     ],
 ];
