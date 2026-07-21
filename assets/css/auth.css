@@ -1,5 +1,5 @@
 /*
- * SaaS Lab — Lab Access (account system)
+ * VibeKB — Account Access (account system)
  * Layered on top of the shared portfolio system (assets/css/style.css).
  * Reuses the workshop palette and typography; adds calm, precise forms and a
  * compact admin registry. Deliberately restrained: obvious, accessible inputs
@@ -343,7 +343,7 @@
     letter-spacing: .05em;
 }
 
-/* ---- SaaS Lab page account strip ---- */
+/* ---- VibeKB page account strip ---- */
 .lab-account-nav {
     display: flex;
     flex-wrap: wrap;

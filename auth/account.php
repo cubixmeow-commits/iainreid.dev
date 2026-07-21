@@ -12,8 +12,8 @@ $user = current_user();
 render_page_top('Your account', 'account');
 ?>
 <section class="auth-card" aria-labelledby="account-title">
-    <p class="mono">Lab Access · Account record</p>
-    <h1 id="account-title">Your SaaS Lab account</h1>
+    <p class="mono">Account Access · Account record</p>
+    <h1 id="account-title">Your VibeKB account</h1>
 
     <dl class="record">
         <div class="record__row">
@@ -35,9 +35,9 @@ render_page_top('Your account', 'account');
     </dl>
 
     <p class="auth-note">
-        This account will eventually provide shared access to the SaaS Lab
-        experiments as they come online. For now it simply establishes your
-        identity in the lab.
+        This account will eventually provide shared access to VibeKB and
+        related workshop tools as they come online. For now it simply
+        establishes your identity.
     </p>
 
     <?php if (is_admin()): ?>

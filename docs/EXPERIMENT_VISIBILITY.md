@@ -1,4 +1,4 @@
-# Experiment Visibility — private-first SaaS Lab experiments
+# Experiment Visibility — private-first workshop experiments
 
 A SaaS experiment can be deployed to the real production server before it is
 publicly discoverable. It can be used privately, then by a few invited testers,
@@ -154,7 +154,7 @@ curl -s -o /dev/null -w "%{http_code}\n" https://iainreid.dev/site/x/hello.php  
 # Compare with a genuinely missing slug page — the gate body should match
 ```
 
-Then check the source of the public SaaS Lab page and site navigation and
+Then check the source of the public VibeKB page and site navigation and
 confirm the experiment name/slug appears **nowhere** (HTML, comments, meta/OG,
 canonical, JSON/JS, structured data, sitemap, feeds). Privacy must come from the
 server-side gate, not from an obscure URL or robots.txt.

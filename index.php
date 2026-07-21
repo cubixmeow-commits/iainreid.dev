@@ -74,7 +74,7 @@ function e(string $value): string
                     <h1>Iain Reid</h1>
                     <p class="hero-copy">I design practical software systems that turn complicated work into clear, usable experiences.</p>
                     <div class="ink-rule"></div>
-                    <p class="hero-note">Currently shaping small SaaS products, guided AI workflows, creative engines, and tools built for real people rather than demo reels.</p>
+                    <p class="hero-note">Currently shaping repository understanding tools, guided AI workflows, creative engines, and systems built for real people rather than demo reels.</p>
                     <a class="text-link" href="#workshop">Open the current entry <span aria-hidden="true">↓</span></a>
                 </article>
             </div>
@@ -97,8 +97,8 @@ function e(string $value): string
                         <path d="M72 82h88M72 104h58M360 256h84M386 278h58"/>
                         <path d="M92 262c38-58 82-75 132-52M296 148c45-34 91-29 136 16"/>
                     </svg>
-                    <span class="diagram-label diagram-label--a">guided workflow</span>
-                    <span class="diagram-label diagram-label--b">quality checks</span>
+                    <span class="diagram-label diagram-label--a">architecture map</span>
+                    <span class="diagram-label diagram-label--b">feature exploration</span>
                 </div>
 
                 <div class="blueprint__content">
@@ -109,7 +109,7 @@ function e(string $value): string
                     <dl class="spec-list">
                         <div><dt>Status</dt><dd><?= e($current['status']) ?></dd></div>
                         <div><dt>Materials</dt><dd><?= e(implode(' · ', $current['materials'])) ?></dd></div>
-                        <div><dt>Purpose</dt><dd>Guide people through complete AI-powered tasks using the subscriptions they already have.</dd></div>
+                        <div><dt>Purpose</dt><dd><?= e($current['purpose'] ?? '') ?></dd></div>
                     </dl>
                     <?php if (!empty($current['url'])): ?>
                         <a class="text-link text-link--workshop" href="<?= e($current['url']) ?>">Enter <?= e($current['title']) ?> <span aria-hidden="true">→</span></a>

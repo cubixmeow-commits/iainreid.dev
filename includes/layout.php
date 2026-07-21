@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Minimal shared view helpers for the SaaS Lab account pages.
+ * Minimal shared view helpers for the VibeKB account pages.
  *
  * These render the small amount of page chrome the auth and admin screens
  * share, so each page stays a short, readable script while still looking like
@@ -29,7 +29,7 @@ function render_page_top(string $title, string $active = ''): void
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#0d0c0a">
     <meta name="robots" content="noindex">
-    <title><?= e($title) ?> · SaaS Lab</title>
+    <title><?= e($title) ?> · VibeKB</title>
     <link rel="stylesheet" href="<?= e(url('assets/css/style.css?v=20260719g')) ?>">
     <link rel="stylesheet" href="<?= e(url('assets/css/auth.css?v=20260719b')) ?>">
 </head>
@@ -38,15 +38,15 @@ function render_page_top(string $title, string $active = ''): void
     <div class="dust" aria-hidden="true"></div>
 
     <header class="site-header">
-        <a class="maker-mark" href="<?= e($labUrl) ?>" aria-label="Return to SaaS Lab">
+        <a class="maker-mark" href="<?= e($labUrl) ?>" aria-label="Return to VibeKB">
             <span class="maker-mark__sigil">IR</span>
             <span>
-                <strong>SaaS Lab</strong>
-                <small>Lab Access</small>
+                <strong>VibeKB</strong>
+                <small>Account Access</small>
             </span>
         </a>
         <nav class="auth-nav" aria-label="Account navigation">
-            <a href="<?= e($labUrl) ?>">SaaS Lab</a>
+            <a href="<?= e($labUrl) ?>">VibeKB</a>
             <?php if (is_logged_in()): ?>
                 <?php if (is_admin()): ?>
                     <a href="<?= e($ideasUrl) ?>"<?= $active === 'ideas' ? ' aria-current="page"' : '' ?>>Ideas</a>
@@ -72,8 +72,8 @@ function render_page_bottom(): void
     ?>
     </main>
     <footer class="auth-footer">
-        <span>iainreid.dev / saas-lab / account</span>
-        <span>Lab Access · <time datetime="<?= e(gmdate('Y')) ?>"><?= e(gmdate('Y')) ?></time></span>
+        <span>iainreid.dev / vibekb / account</span>
+        <span>Account Access · <time datetime="<?= e(gmdate('Y')) ?>"><?= e(gmdate('Y')) ?></time></span>
     </footer>
 </body>
 </html>

@@ -206,7 +206,7 @@ $isArchived = $experiment['status'] === 'archived';
 render_page_top('Idea workspace', 'ideas');
 ?>
 <section class="auth-card auth-card--wide idea-workspace" aria-labelledby="exp-title">
-    <p class="mono">SaaS Lab · Idea workspace</p>
+    <p class="mono">VibeKB · Idea workspace</p>
     <div class="idea-workspace__title">
         <h1 id="exp-title"><?= e($v('name') !== '' ? $v('name') : $experiment['name']) ?></h1>
         <span class="idea-workspace__code" title="Read-only idea code"><?= e($experiment['experiment_code']) ?></span>

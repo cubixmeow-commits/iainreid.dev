@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Create the first SaaS Lab administrator (or any additional admin) from the
+ * Create the first VibeKB administrator (or any additional admin) from the
  * command line. This is the preferred, documented way to seed an admin account
  * without hardcoding credentials into the codebase or exposing a public
  * "make admin" URL.
@@ -46,7 +46,7 @@ function fail_cli(string $message, int $code): never
 $options = getopt('', ['name:', 'email:', 'help']);
 
 if (isset($options['help'])) {
-    echo "Create a SaaS Lab administrator.\n\n"
+    echo "Create a VibeKB administrator.\n\n"
         . "Usage:\n"
         . "  SAAS_LAB_ADMIN_PASSWORD='...' php scripts/create-admin.php "
         . "--name=\"Full Name\" --email=\"admin@example.com\"\n";

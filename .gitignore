@@ -7,7 +7,7 @@ Thumbs.db
 !.env.example
 config.local.php
 
-# SaaS Lab SQLite database and its runtime sidecar files (never commit real
+# VibeKB SQLite database and its runtime sidecar files (never commit real
 # accounts). The protective data/.htaccess and data/index.php are NOT ignored.
 *.sqlite
 *.sqlite3

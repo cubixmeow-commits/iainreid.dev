@@ -27,7 +27,7 @@ render_page_top('Admin console', 'admin');
     <p class="mono">Admin console · User registry</p>
     <h1 id="admin-title">Admin console</h1>
 
-    <p class="auth-lede">SaaS Lab work happens in Ideas. This console is for account oversight.</p>
+    <p class="auth-lede">Workshop work happens in Ideas. This console is for account oversight.</p>
     <p><a class="btn btn--primary" href="<?= e(url('admin/experiments.php')) ?>">Open Ideas →</a></p>
 
     <ul class="summary" aria-label="Account totals">

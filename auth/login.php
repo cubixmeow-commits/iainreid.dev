@@ -49,9 +49,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 render_page_top('Log in');
 ?>
 <section class="auth-card" aria-labelledby="login-title">
-    <p class="mono">Lab Access · Sign in</p>
-    <h1 id="login-title">Log in to SaaS Lab</h1>
-    <p class="auth-lede">Access your SaaS Lab account.</p>
+    <p class="mono">Account Access · Sign in</p>
+    <h1 id="login-title">Log in to VibeKB</h1>
+    <p class="auth-lede">Access your VibeKB account.</p>
 
     <?php render_error_summary($errors); ?>
 
